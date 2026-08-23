@@ -27,6 +27,7 @@
                 Patient Management is ready for authorized Admin and Receptionist users.
             </p>
             <a th:if="${canManagePatients}" class="btn btn-primary mt-3" th:href="@{/reception/patients}">Open Patient Management</a>
+            <a th:if="${canManagePatients}" class="btn btn-primary mt-3" th:href="@{/reception/appointments}">Open Appointment Management</a>
             <a th:if="${isAdmin}" class="btn btn-outline-primary mt-3" th:href="@{/admin/departments}">Open Admin Management</a>
         </div>
     </div>
