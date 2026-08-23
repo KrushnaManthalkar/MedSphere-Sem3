@@ -1,0 +1,14 @@
+body {
+    min-height: 100vh;
+    background: #f8fafc;
+}
+
+.login-page {
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, #e0f2fe, #f8fafc 55%, #dbeafe);
+}
+
+.login-page main {
+    width: 100%;
+}
