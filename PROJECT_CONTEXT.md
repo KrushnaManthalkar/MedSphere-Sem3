@@ -6,7 +6,7 @@
 
 - **Current version:** Semester 3 Mini Version
 - **Future version:** Semester 4 Advanced Version
-- **Current status:** Phase 1 complete, Phase 2 complete, Phase 3 complete, Phase 4 complete, Phase 5 complete
+- **Current status:** Phase 1 complete, Phase 2 complete, Phase 3 complete, Phase 4 complete, Phase 5 complete, Phase 6 complete
 - **Next phase:** Awaiting approval
 
 This file is the permanent project context and development history. Update it after every approved phase with the implementation details, files changed, tests performed, important decisions, and known issues.
@@ -166,7 +166,7 @@ Current development-only credentials:
 | Username | Password | Role |
 | --- | --- | --- |
 | `admin` | `admin123` | `ADMIN` |
-| `receptionist` | `receptionist123` | `RECEPTIONIST` |
+| `receptionist` | `reception123` | `RECEPTIONIST` |
 | `doctor` | `doctor123` | `DOCTOR` |
 
 Login and logout behavior:
@@ -329,6 +329,59 @@ Phase 5 tests performed:
 
 The Phase 5 verification Department and Doctor profile remain in the database because the project rule is to avoid deleting/resetting data.
 
+### Phase 6 – Appointment Management
+
+Completed appointment-management work:
+
+- Added Receptionist/Admin appointment management at `/reception/appointments`.
+- Added appointment listing with search by patient code, patient name, or doctor name.
+- Added appointment status filtering for `SCHEDULED`, `COMPLETED`, and `CANCELLED`.
+- Added new appointment creation using existing Patient and Doctor records.
+- Added server-side validation for required patient, doctor, date, and time fields, plus a maximum 500-character reason.
+- Appointment dates cannot be in the past.
+- Added doctor/date/time conflict protection so a doctor cannot receive two appointments at the same date and time.
+- New appointments are created with `SCHEDULED` status.
+- Added appointment details view.
+- Added appointment status update from `SCHEDULED` to the selected valid status.
+- Status changes are blocked once an appointment is no longer `SCHEDULED`.
+- Added Appointment Management navigation to the authenticated home page for Admin and Receptionist users.
+- Kept the existing `AppointmentForm` structure; no unnecessary replacement of the DTO was performed.
+- No consultation, prescription, medical-history UI, dashboards, billing, or other advanced modules were added in this phase.
+
+Phase 6 authorization:
+
+- Appointment URLs are under `/reception/appointments/**`.
+- `ADMIN` and `RECEPTIONIST` are allowed by the existing `/reception/**` Spring Security rule.
+- Doctor-specific appointment screens were not added in this phase.
+
+Phase 6 files created or modified:
+
+- `src/main/java/com/medsphere/controller/AppointmentController.java`
+- `src/main/java/com/medsphere/dto/AppointmentForm.java`
+- `src/main/java/com/medsphere/service/AppointmentService.java`
+- `src/main/java/com/medsphere/service/impl/AppointmentServiceImpl.java`
+- `src/main/java/com/medsphere/repository/AppointmentRepository.java`
+- `src/main/resources/templates/appointments/list.html`
+- `src/main/resources/templates/appointments/form.html`
+- `src/main/resources/templates/appointments/details.html`
+- `src/main/java/com/medsphere/controller/HomeController.java`
+- `src/main/resources/templates/home.html`
+
+Phase 6 tests performed:
+
+- Verified the Appointment Management page opens on `http://localhost:8080/reception/appointments`.
+- Verified existing patient and doctor data appears correctly in appointment management.
+- Verified appointment data is displayed with date, time, patient, doctor, reason, and status.
+- Verified the appointment details page opens successfully.
+- Verified a scheduled appointment can be changed to `COMPLETED` and the updated status is reflected in the appointment list.
+- Verified the home page navigation provides Appointment Management access for the Receptionist/Admin flow, removing the need to enter the direct URL manually.
+- Verified the application continues running on port 8080 with XAMPP MariaDB on port 3307.
+
+Known Phase 6 notes:
+
+- The current appointment status rule intentionally allows changes only while the appointment is `SCHEDULED`; completed/cancelled appointments cannot be changed again.
+- The current search implementation filters the loaded appointment list in the service layer, which is acceptable for the Semester 3 mini scope but may be optimized with repository queries later if the dataset grows significantly.
+
 ## Semester 3 Mini Scope
 
 The Semester 3 Mini version should include:
@@ -375,10 +428,12 @@ The Semester 3 project is intended to become the foundation for a Semester 4 adv
 - Record major architecture decisions in this file.
 - When a phase is completed, update this file with implementation details, files changed, tests performed, and known issues.
 - Always inspect the current project before making assumptions.
+- Use the GitHub repository as the current source of truth when reviewing existing project files.
+- After meaningful local changes, commit and push the working state so the repository remains synchronized.
 
 ## Current Development Phase
 
-**No active phase — Phase 5 complete**
+**No active phase — Phase 6 complete**
 
 ## Next Objective
 
