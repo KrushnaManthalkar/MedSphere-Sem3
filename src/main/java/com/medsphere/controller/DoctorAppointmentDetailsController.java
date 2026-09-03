@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/doctor/appointments")
+@RequestMapping("/doctors/appointments")
 public class DoctorAppointmentDetailsController {
 
     private final AppointmentService appointmentService;

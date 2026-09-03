@@ -51,7 +51,7 @@
 
     <div class="mb-4">
 
-        <a th:href="@{/doctor/appointments}"
+        <a th:href="@{/doctors/appointments}"
            class="text-decoration-none">
             ← Back to My Appointments
         </a>
@@ -196,13 +196,13 @@
                 </a>
 
                 <a th:if="${appointment.status.name() == 'SCHEDULED'}"
-                th:href="@{/doctor/appointments/{id}/consultation(id=${appointment.id})}"
+                th:href="@{/doctors/appointments/{id}/consultation(id=${appointment.id})}"
                 class="btn btn-primary">
                     Start Consultation
                 </a>
 
                 <a th:if="${appointment.status.name() == 'COMPLETED'}"
-                th:href="@{/doctor/appointments/{id}/consultation/details(id=${appointment.id})}"
+                th:href="@{/doctors/appointments/{id}/consultation/details(id=${appointment.id})}"
                 class="btn btn-success">
                     View Consultation
                 </a>

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 
 @Controller
-@RequestMapping("/doctor/appointments")
+@RequestMapping("/doctors/appointments")
 public class DoctorConsultationController {
 
     private final AppointmentService appointmentService;
@@ -89,7 +89,7 @@ public class DoctorConsultationController {
 
         appointmentService.updateAppointmentStatus(id, "COMPLETED");
 
-        return "redirect:/doctor/appointments/" + id + "/consultation/details";
+        return "redirect:/doctors/appointments/" + id;
     }
 
     private Doctor getLoggedInDoctor(Authentication authentication) {
