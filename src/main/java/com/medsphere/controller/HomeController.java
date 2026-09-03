@@ -10,14 +10,28 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Authentication authentication, Model model) {
+
         model.addAttribute("username", authentication.getName());
+
         boolean canManagePatients = authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN")
-                        || authority.getAuthority().equals("ROLE_RECEPTIONIST"));
+                .anyMatch(authority ->
+                        authority.getAuthority().equals("ROLE_ADMIN")
+                                || authority.getAuthority().equals("ROLE_RECEPTIONIST"));
+
         model.addAttribute("canManagePatients", canManagePatients);
+
         boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+                .anyMatch(authority ->
+                        authority.getAuthority().equals("ROLE_ADMIN"));
+
         model.addAttribute("isAdmin", isAdmin);
+
+        boolean isDoctor = authentication.getAuthorities().stream()
+                .anyMatch(authority ->
+                        authority.getAuthority().equals("ROLE_DOCTOR"));
+
+        model.addAttribute("isDoctor", isDoctor);
+
         return "home";
     }
 
