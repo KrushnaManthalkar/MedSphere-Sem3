@@ -58,6 +58,7 @@ public class DoctorPrescriptionController {
 
         model.addAttribute("appointment", appointment);
         model.addAttribute("consultation", consultation);
+        model.addAttribute("doctor", doctor);
         model.addAttribute("prescriptionForm", new PrescriptionForm());
 
         return "doctors/prescription-form";
