@@ -5,8 +5,8 @@
 **MedSphere – Unified Hospital Information Management System**
 
 - **Current version:** Semester 3 Mini Version
-- **Current status:** Phase 1 complete, Phase 2 complete, Phase 3 complete, Phase 4 complete, Phase 5 complete, Phase 6 complete, Phase 7 complete
-- **Next phase:** Phase 8 – Basic Prescription
+- **Current status:** Phase 1 complete, Phase 2 complete, Phase 3 complete, Phase 4 complete, Phase 5 complete, Phase 6 complete, Phase 7 complete, Phase 8 complete
+- **Next phase:** To be planned after Phase 8 verification
 
 This file is the permanent project context and development history. Update it after every approved phase with the implementation details, files changed, tests performed, important decisions, and known issues.
 
@@ -72,7 +72,7 @@ Authorization rules:
 | --- | --- |
 | `/admin/**` | `ADMIN` |
 | `/reception/**` | `ADMIN`, `RECEPTIONIST` |
-| `/doctor/**` | `ADMIN`, `DOCTOR` |
+| `/doctors/**` | `ADMIN`, `DOCTOR` |
 | All other routes | Authenticated users |
 
 ### Phase 4 – Patient Management
@@ -127,20 +127,20 @@ Consultation Details
 
 Implemented:
 
-- Doctor appointment list at `/doctor/appointments`.
-- Doctor appointment details at `/doctor/appointments/{id}`.
+- Doctor appointment list at `/doctors/appointments`.
+- Doctor appointment details at `/doctors/appointments/{id}`.
 - Doctor ownership checks so a doctor can only access their own appointments.
 - Consultation DTO with symptoms, diagnosis, notes, and consultation date.
 - Consultation service and implementation under the existing `service` / `service/impl` structure.
 - Repository lookup by appointment ID and duplicate consultation protection.
-- Consultation form at `/doctor/appointments/{id}/consultation`.
+- Consultation form at `/doctors/appointments/{id}/consultation`.
 - Consultation save through POST to the same route.
 - Scheduled appointments only can start a consultation.
 - Successful consultation save changes the appointment status to `COMPLETED`.
-- Consultation details at `/doctor/appointments/{id}/consultation/details`.
+- Consultation details at `/doctors/appointments/{id}/consultation/details`.
 - Appointment Details UI shows `Start Consultation` for scheduled appointments and `View Consultation` for completed appointments.
 - Doctor navigation on the home page through `My Appointments`.
-- Templates are under `src/main/resources/templates/doctors/` (plural `doctors` folder); URL paths remain under `/doctor/**`.
+- Templates are under `src/main/resources/templates/doctors/`.
 
 Phase 7 files created or modified:
 
@@ -177,11 +177,79 @@ Phase 7 tests performed:
 
 Important Phase 7 decisions:
 
-- Kept URL paths under singular `/doctor/**` while keeping Thymeleaf templates under the existing plural `templates/doctors/` folder.
+- Standardized doctor-side URL paths under `/doctors/**` and kept Thymeleaf templates under `templates/doctors/`.
 - Kept the existing beginner-friendly layered architecture and did not add unnecessary advanced features.
 - Consultation is one-to-one with Appointment and is located through appointment ID.
 - Consultation creation is limited to scheduled appointments; saving it marks the appointment completed.
 - No prescription, medical history, dashboard, billing, lab, pharmacy, or advanced module work was included in Phase 7.
+
+### Phase 8 – Basic Prescription
+
+Completed the basic prescription workflow for the Semester 3 mini version.
+
+Flow:
+
+```text
+Consultation Details
+    ↓
+Add Prescription
+    ↓
+Prescription Form
+    ↓
+Medicine / Dosage / Frequency / Duration / Instructions
+    ↓
+Save Prescription
+    ↓
+Database
+    ↓
+Consultation Details
+    ↓
+Prescription List
+```
+
+Implemented:
+
+- Prescription entity remains linked to Consultation through a mandatory many-to-one relationship.
+- Added `PrescriptionRepository` with lookup by consultation ID.
+- Added `PrescriptionService` and `PrescriptionServiceImpl`.
+- Added `PrescriptionForm` for medicine name, dosage, frequency, duration, and optional instructions.
+- Added `DoctorPrescriptionController` under `/doctors/appointments`.
+- Added GET route `/doctors/appointments/{id}/consultation/prescription` to open the form.
+- Added POST route `/doctors/appointments/{id}/consultation/prescription` to save a prescription.
+- Added doctor ownership checks before accessing or saving a prescription for an appointment.
+- Prescription form includes CSRF protection and required fields for core prescription information.
+- Consultation Details page lists all prescriptions belonging to the consultation.
+- After saving, the user is redirected back to Consultation Details.
+- Kept the implementation basic; no pharmacy inventory, medicine master, billing, or advanced prescription features were added.
+
+Phase 8 files created or modified:
+
+- `src/main/java/com/medsphere/repository/PrescriptionRepository.java`
+- `src/main/java/com/medsphere/service/PrescriptionService.java`
+- `src/main/java/com/medsphere/service/impl/PrescriptionServiceImpl.java`
+- `src/main/java/com/medsphere/dto/PrescriptionForm.java`
+- `src/main/java/com/medsphere/controller/DoctorPrescriptionController.java`
+- `src/main/resources/templates/doctors/prescription-form.html`
+- `src/main/resources/templates/doctors/consultation-details.html`
+- `src/main/java/com/medsphere/entity/Prescription.java` was retained as the existing Phase 2 prescription entity.
+
+Phase 8 tests performed:
+
+- Doctor login and doctor appointment access continued to work.
+- Consultation Details page successfully displayed the `+ Add Prescription` button.
+- Prescription form initially exposed a Thymeleaf model error because the controller did not add the `doctor` object to the model; this was fixed with `model.addAttribute("doctor", doctor)`.
+- After the fix, the prescription form successfully opened.
+- Test prescription was successfully saved with medicine `Paracetamol`, dosage `500mg`, frequency `Twice daily`, duration `5 days`, and instruction `After Food`.
+- Saved prescription successfully appeared in the Consultation Details prescription table.
+- Prescription data was successfully persisted and retrieved from MariaDB.
+- Final doctor-side URL convention was standardized to `/doctors/**`.
+
+Important Phase 8 decisions:
+
+- Reused the existing doctor authentication and ownership-check pattern.
+- Kept prescription functionality attached to an existing consultation rather than creating standalone prescriptions.
+- Kept the UI simple and viva-friendly for the Semester 3 mini project.
+- Prescriptions are displayed directly within Consultation Details instead of adding an unnecessary separate prescription-details page.
 
 ## Known Warnings / Environment Notes
 
@@ -198,14 +266,8 @@ Important Phase 7 decisions:
 - Avoid unnecessary rewrites of completed phases.
 - Preserve existing verification data unless there is an approved reason to remove it.
 - Update this `PROJECT_CONTEXT.md` at the end of each completed phase.
+- Use `/doctors/**` consistently for doctor-side URL paths; Java class/entity names such as `Doctor` remain singular where grammatically appropriate.
 
 ## Next Objective
 
-### Phase 8 – Basic Prescription
-
-Planned scope:
-
-- Doctor can add a basic prescription to an existing consultation.
-- Prescription should remain tied to the consultation.
-- Keep the implementation simple and appropriate for the Semester 3 mini version.
-- No pharmacy inventory or advanced prescription features unless explicitly approved.
+To be planned after Phase 8 verification. Before starting a new feature, review the current repository and preserve the working Phase 8 prescription flow.
