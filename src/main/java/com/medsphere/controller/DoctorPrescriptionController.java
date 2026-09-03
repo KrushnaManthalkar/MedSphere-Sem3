@@ -1,5 +1,6 @@
 package com.medsphere.controller;
 
+import com.medsphere.dto.PrescriptionForm;
 import com.medsphere.entity.Appointment;
 import com.medsphere.entity.Consultation;
 import com.medsphere.entity.Doctor;
@@ -11,13 +12,11 @@ import com.medsphere.service.PrescriptionService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/doctors/appointments")
-public class DoctorConsultationDetailsController {
+public class DoctorPrescriptionController {
 
     private final AppointmentService appointmentService;
     private final ConsultationService consultationService;
@@ -25,7 +24,7 @@ public class DoctorConsultationDetailsController {
     private final DoctorRepository doctorRepository;
     private final UserRepository userRepository;
 
-    public DoctorConsultationDetailsController(
+    public DoctorPrescriptionController(
             AppointmentService appointmentService,
             ConsultationService consultationService,
             PrescriptionService prescriptionService,
@@ -39,8 +38,8 @@ public class DoctorConsultationDetailsController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("/{id}/consultation/details")
-    public String viewConsultation(
+    @GetMapping("/{id}/consultation/prescription")
+    public String showPrescriptionForm(
             @PathVariable Long id,
             Authentication authentication,
             Model model) {
@@ -50,24 +49,45 @@ public class DoctorConsultationDetailsController {
         Appointment appointment = appointmentService.getAppointment(id);
 
         if (!appointment.getDoctor().getId().equals(doctor.getId())) {
-            throw new IllegalArgumentException(
-                    "You are not authorized to view this consultation.");
+            throw new IllegalStateException(
+                    "You are not authorized to access this appointment.");
         }
 
         Consultation consultation =
                 consultationService.getConsultationByAppointmentId(id);
 
         model.addAttribute("appointment", appointment);
-        model.addAttribute("doctor", doctor);
         model.addAttribute("consultation", consultation);
-        model.addAttribute(
-                "prescriptions",
-                prescriptionService.getPrescriptionsByConsultationId(
-                        consultation.getId()
-                )
+        model.addAttribute("prescriptionForm", new PrescriptionForm());
+
+        return "doctors/prescription-form";
+    }
+
+    @PostMapping("/{id}/consultation/prescription")
+    public String savePrescription(
+            @PathVariable Long id,
+            @ModelAttribute PrescriptionForm form,
+            Authentication authentication) {
+
+        Doctor doctor = getLoggedInDoctor(authentication);
+
+        Appointment appointment = appointmentService.getAppointment(id);
+
+        if (!appointment.getDoctor().getId().equals(doctor.getId())) {
+            throw new IllegalStateException(
+                    "You are not authorized to access this appointment.");
+        }
+
+        Consultation consultation =
+                consultationService.getConsultationByAppointmentId(id);
+
+        prescriptionService.createPrescription(
+                consultation.getId(),
+                form
         );
 
-        return "doctors/consultation-details";
+        return "redirect:/doctors/appointments/"
+                + id + "/consultation/details";
     }
 
     private Doctor getLoggedInDoctor(Authentication authentication) {
