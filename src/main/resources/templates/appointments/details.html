@@ -10,176 +10,203 @@
     <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
             rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/css/app.css}">
 </head>
 
-<body class="bg-light">
+<body class="dashboard-page">
 
-<nav class="navbar navbar-dark bg-primary shadow-sm">
+<nav class="navbar navbar-expand-lg med-navbar">
 
-    <div class="container">
+    <div class="container-fluid px-4">
 
-        <a class="navbar-brand fw-semibold"
+        <a class="navbar-brand med-brand"
            th:href="@{/}">
+            <span class="brand-icon">+</span>
             MedSphere
         </a>
 
-        <form th:action="@{/logout}" method="post">
+        <div class="d-flex gap-2">
 
-            <input type="hidden"
-                   th:name="${_csrf.parameterName}"
-                   th:value="${_csrf.token}">
+            <a class="btn btn-outline-light btn-sm"
+               th:href="@{/reception/appointments}">
+                Back to Appointments
+            </a>
 
-            <button class="btn btn-outline-light btn-sm">
-                Sign out
-            </button>
+            <form th:action="@{/logout}"
+                  method="post"
+                  class="m-0">
 
-        </form>
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}">
+
+                <button class="btn btn-outline-light btn-sm"
+                        type="submit">
+                    Sign out
+                </button>
+
+            </form>
+
+        </div>
 
     </div>
 
 </nav>
 
-<main class="container py-4">
 
-    <div class="mb-4">
+<main class="container-fluid px-4 py-4">
 
-        <a th:href="@{/reception/appointments}"
-           class="text-decoration-none">
-            ← Back to Appointments
-        </a>
+    <!-- Header -->
 
-        <h1 class="h3 mt-3 mb-1">
-            Appointment Details
-        </h1>
+    <div class="page-header mb-4">
 
-        <p class="text-muted mb-0">
-            View appointment information and update its status.
-        </p>
+        <div>
+
+            <div class="page-eyebrow">
+                APPOINTMENT DETAILS
+            </div>
+
+            <h1>
+                Appointment
+            </h1>
+
+            <p th:text="${'Appointment #' + appointment.id}">
+                Appointment #1
+            </p>
+
+        </div>
+
+        <div>
+
+            <span class="badge text-bg-primary"
+                  th:if="${appointment.status.name() == 'SCHEDULED'}">
+                Scheduled
+            </span>
+
+            <span class="badge text-bg-success"
+                  th:if="${appointment.status.name() == 'COMPLETED'}">
+                Completed
+            </span>
+
+            <span class="badge text-bg-danger"
+                  th:if="${appointment.status.name() == 'CANCELLED'}">
+                Cancelled
+            </span>
+
+        </div>
 
     </div>
 
+
     <div class="row g-4">
 
-        <!-- Appointment information -->
+        <!-- Appointment Information -->
 
         <div class="col-lg-8">
 
-            <div class="card shadow-sm border-0">
+            <section class="content-card">
+
+                <div class="content-card-header">
+
+                    <div>
+                        <h2>Appointment Information</h2>
+                        <p>Patient visit details</p>
+                    </div>
+
+                </div>
+
 
                 <div class="card-body p-4">
 
-                    <div class="d-flex justify-content-between align-items-start mb-4">
-
-                        <div>
-
-                            <h2 class="h5 mb-1">
-                                Appointment
-                            </h2>
-
-                            <small class="text-muted"
-                                   th:text="${'Appointment #' + appointment.id}">
-                            </small>
-
-                        </div>
-
-                        <span class="badge text-bg-primary"
-                              th:if="${appointment.status.name() == 'SCHEDULED'}">
-                            Scheduled
-                        </span>
-
-                        <span class="badge text-bg-success"
-                              th:if="${appointment.status.name() == 'COMPLETED'}">
-                            Completed
-                        </span>
-
-                        <span class="badge text-bg-danger"
-                              th:if="${appointment.status.name() == 'CANCELLED'}">
-                            Cancelled
-                        </span>
-
-                    </div>
-
                     <div class="row g-4">
 
-                        <!-- Date -->
-
                         <div class="col-md-6">
 
-                            <div class="text-muted small">
-                                Appointment Date
-                            </div>
+                            <div class="detail-item">
 
-                            <div class="fw-semibold"
-                                 th:text="${appointment.appointmentDate}">
+                                <span>Appointment Date</span>
+
+                                <strong th:text="${appointment.appointmentDate}">
+                                    -
+                                </strong>
+
                             </div>
 
                         </div>
 
-                        <!-- Time -->
 
                         <div class="col-md-6">
 
-                            <div class="text-muted small">
-                                Appointment Time
-                            </div>
+                            <div class="detail-item">
 
-                            <div class="fw-semibold"
-                                 th:text="${appointment.appointmentTime}">
+                                <span>Appointment Time</span>
+
+                                <strong th:text="${appointment.appointmentTime}">
+                                    -
+                                </strong>
+
                             </div>
 
                         </div>
 
-                        <!-- Patient -->
 
                         <div class="col-md-6">
 
-                            <div class="text-muted small">
-                                Patient
-                            </div>
+                            <div class="detail-item">
 
-                            <div class="fw-semibold"
-                                 th:text="${appointment.patient.name}">
-                            </div>
+                                <span>Patient</span>
 
-                            <small class="text-muted"
-                                   th:text="${appointment.patient.patientCode}">
-                            </small>
+                                <strong th:text="${appointment.patient.name}">
+                                    -
+                                </strong>
+
+                                <small class="text-muted"
+                                       th:text="${appointment.patient.patientCode}">
+                                    -
+                                </small>
+
+                            </div>
 
                         </div>
 
-                        <!-- Doctor -->
 
                         <div class="col-md-6">
 
-                            <div class="text-muted small">
-                                Doctor
-                            </div>
+                            <div class="detail-item">
 
-                            <div class="fw-semibold"
-                                 th:text="${appointment.doctor.user.fullName}">
-                            </div>
+                                <span>Doctor</span>
 
-                            <small class="text-muted"
-                                   th:text="${appointment.doctor.specialization}">
-                            </small>
+                                <strong th:text="${appointment.doctor.user.fullName}">
+                                    -
+                                </strong>
+
+                                <small class="text-muted"
+                                       th:text="${appointment.doctor.specialization}">
+                                    -
+                                </small>
+
+                            </div>
 
                         </div>
 
-                        <!-- Reason -->
 
                         <div class="col-12">
 
-                            <div class="text-muted small">
-                                Reason / Visit Purpose
-                            </div>
+                            <div class="detail-item">
 
-                            <div th:if="${appointment.reason != null}"
-                                 th:text="${appointment.reason}">
-                            </div>
+                                <span>Reason / Visit Purpose</span>
 
-                            <div th:if="${appointment.reason == null}"
-                                 class="text-muted">
-                                No reason provided.
+                                <strong th:if="${appointment.reason != null}"
+                                        th:text="${appointment.reason}">
+                                    -
+                                </strong>
+
+                                <strong th:if="${appointment.reason == null}"
+                                        class="text-muted">
+                                    No reason provided.
+                                </strong>
+
                             </div>
 
                         </div>
@@ -188,35 +215,45 @@
 
                 </div>
 
-            </div>
+            </section>
 
         </div>
 
 
-        <!-- Status management -->
+        <!-- Status -->
 
         <div class="col-lg-4">
 
-            <div class="card shadow-sm border-0">
+            <section class="content-card">
+
+                <div class="content-card-header">
+
+                    <div>
+                        <h2>Appointment Status</h2>
+                        <p>Update the current status</p>
+                    </div>
+
+                </div>
+
 
                 <div class="card-body p-4">
 
-                    <h2 class="h5 mb-3">
-                        Update Status
-                    </h2>
-
-                    <p class="text-muted small">
-                        Change the current appointment status.
-                    </p>
-
-                    <form th:action="@{/reception/appointments/{id}/status(id=${appointment.id})}"
-                          method="post">
+                    <form
+                            th:action="@{/reception/appointments/{id}/status(id=${appointment.id})}"
+                            method="post">
 
                         <input type="hidden"
                                th:name="${_csrf.parameterName}"
                                th:value="${_csrf.token}">
 
-                        <select name="status"
+
+                        <label for="status"
+                               class="form-label fw-semibold">
+                            Status
+                        </label>
+
+                        <select id="status"
+                                name="status"
                                 class="form-select mb-3">
 
                             <option value="SCHEDULED"
@@ -236,6 +273,7 @@
 
                         </select>
 
+
                         <button type="submit"
                                 class="btn btn-primary w-100">
                             Update Status
@@ -245,7 +283,7 @@
 
                 </div>
 
-            </div>
+            </section>
 
         </div>
 
