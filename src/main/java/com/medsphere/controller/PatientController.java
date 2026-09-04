@@ -2,6 +2,7 @@ package com.medsphere.controller;
 
 import com.medsphere.dto.PatientForm;
 import com.medsphere.entity.Patient;
+import com.medsphere.service.MedicalHistoryService;
 import com.medsphere.service.PatientService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -19,9 +20,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/reception/patients")
 public class PatientController {
     private final PatientService patientService;
+    private final MedicalHistoryService medicalHistoryService;
 
-    public PatientController(PatientService patientService) {
+    public PatientController(
+        PatientService patientService,
+        MedicalHistoryService medicalHistoryService) {
+
         this.patientService = patientService;
+        this.medicalHistoryService = medicalHistoryService;
     }
 
     @GetMapping
@@ -51,6 +57,10 @@ public class PatientController {
     @GetMapping("/{id}")
     public String viewPatient(@PathVariable Long id, Model model) {
         model.addAttribute("patient", patientService.getPatientById(id));
+        model.addAttribute(
+                "medicalHistories",
+                medicalHistoryService.getMedicalHistoryByPatientId(id)
+        );
         return "patients/details";
     }
 
