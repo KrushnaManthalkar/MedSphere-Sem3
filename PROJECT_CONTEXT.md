@@ -5,8 +5,8 @@
 **MedSphere – Unified Hospital Information Management System**
 
 - **Current version:** Semester 3 Mini Version
-- **Current status:** Phase 1 complete, Phase 2 complete, Phase 3 complete, Phase 4 complete, Phase 5 complete, Phase 6 complete, Phase 7 complete, Phase 8 complete
-- **Next phase:** To be planned after Phase 8 verification
+- **Current status:** Phase 1 complete, Phase 2 complete, Phase 3 complete, Phase 4 complete, Phase 5 complete, Phase 6 complete, Phase 7 complete, Phase 8 complete, Phase 9 complete
+- **Next phase:** To be planned after Phase 9 verification
 
 This file is the permanent project context and development history. Update it after every approved phase with the implementation details, files changed, tests performed, important decisions, and known issues.
 
@@ -251,6 +251,78 @@ Important Phase 8 decisions:
 - Kept the UI simple and viva-friendly for the Semester 3 mini project.
 - Prescriptions are displayed directly within Consultation Details instead of adding an unnecessary separate prescription-details page.
 
+### Phase 9 – Medical History
+
+Completed the basic medical history workflow for the Semester 3 mini version.
+
+Flow:
+
+```text
+Receptionist/Admin
+    ↓
+Patient Profile
+    ↓
+Medical History
+    ↓
+Add Medical History
+    ↓
+Condition / Diagnosis
+Details
+Record Date
+    ↓
+Save
+    ↓
+Database
+    ↓
+Patient Profile
+    ↓
+Medical History List
+```
+
+Implemented:
+
+- Added `MedicalHistoryRepository.findByPatientIdOrderByRecordDateDesc(Long patientId)` for patient-specific history retrieval with newest records first.
+- Added `MedicalHistoryForm` containing condition name, details, and record date.
+- Added `MedicalHistoryService` and `MedicalHistoryServiceImpl` under the existing `service` / `service/impl` structure.
+- Added patient lookup and patient-to-history relationship handling when saving a record.
+- Added `MedicalHistoryController` under `/reception/patients`.
+- Added GET route `/reception/patients/{patientId}/medical-history/new` for the add-history form.
+- Added POST route `/reception/patients/{patientId}/medical-history` for saving a history record.
+- Updated `PatientController` to load medical histories when opening a patient profile.
+- Added `medical-history-form.html` with Condition / Diagnosis, Details, and Record Date fields.
+- Updated `patients/details.html` with a Medical History section, Add Medical History button, empty-state message, and history table.
+- Kept the implementation basic and did not add separate medication/treatment fields, billing, pharmacy, or advanced medical-record features.
+
+Phase 9 files created or modified:
+
+- `src/main/java/com/medsphere/repository/MedicalHistoryRepository.java`
+- `src/main/java/com/medsphere/dto/MedicalHistoryForm.java`
+- `src/main/java/com/medsphere/service/MedicalHistoryService.java`
+- `src/main/java/com/medsphere/service/impl/MedicalHistoryServiceImpl.java`
+- `src/main/java/com/medsphere/controller/MedicalHistoryController.java`
+- `src/main/java/com/medsphere/controller/PatientController.java`
+- `src/main/resources/templates/patients/medical-history-form.html`
+- `src/main/resources/templates/patients/details.html`
+
+Phase 9 tests performed:
+
+- Patient Profile successfully displayed the new Medical History section.
+- Add Medical History button successfully opened the form.
+- Test record was successfully saved with condition `Fever`, details `Patient had fever and mild weakness`, and record date `2026-09-04`.
+- Saved medical history successfully appeared in the Patient Profile history table.
+- Patient-to-medical-history relationship and database persistence were successfully verified through the working browser flow.
+- Existing Patient Management flow continued to work.
+- Git rebase conflict caused by concurrent changes to `MedicalHistoryRepository.java` was safely resolved without losing the Medical History implementation; local commits were rebased and successfully pushed to `main`.
+- Final local Git status was verified as up to date with `origin/main` and working tree clean.
+
+Important Phase 9 decisions:
+
+- Reused the existing Patient Profile page instead of creating a separate medical-history page.
+- Kept Medical History limited to the existing entity fields: patient, condition name, details, and record date.
+- Kept the workflow under `/reception/**` so existing ADMIN/RECEPTIONIST authorization applies.
+- Used the existing beginner-friendly layered architecture and did not add unnecessary advanced features.
+- Displayed history records newest-first using the repository query method.
+
 ## Known Warnings / Environment Notes
 
 - XAMPP MariaDB/MySQL must be running on port 3307 for local development.
@@ -270,4 +342,4 @@ Important Phase 8 decisions:
 
 ## Next Objective
 
-To be planned after Phase 8 verification. Before starting a new feature, review the current repository and preserve the working Phase 8 prescription flow.
+To be planned after Phase 9 verification. Before starting a new feature, review the current repository and preserve the working Phase 9 medical history flow.
