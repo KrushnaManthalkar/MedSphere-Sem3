@@ -1,14 +1,312 @@
+/* ================================
+   MedSphere Global Styles
+   ================================ */
+
 body {
     min-height: 100vh;
-    background: #f8fafc;
+    margin: 0;
+    background: #f4f7fb;
+    color: #1f2937;
 }
+
+
+/* ================================
+   Login
+   ================================ */
 
 .login-page {
     display: grid;
     place-items: center;
+    min-height: 100vh;
     background: linear-gradient(135deg, #e0f2fe, #f8fafc 55%, #dbeafe);
 }
 
 .login-page main {
     width: 100%;
+}
+
+
+/* ================================
+   Navbar
+   ================================ */
+
+.med-navbar {
+    background: #0f4c81;
+    min-height: 68px;
+}
+
+.med-brand {
+    color: #ffffff !important;
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+}
+
+.brand-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    margin-right: 8px;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #0f4c81;
+    font-size: 1.25rem;
+    font-weight: 800;
+}
+
+.user-label {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.72rem;
+}
+
+.user-name {
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+
+/* ================================
+   Dashboard
+   ================================ */
+
+.dashboard-page {
+    background: #f4f7fb;
+}
+
+.dashboard-hero {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 230px;
+    padding: 42px 48px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #0f4c81, #1769aa);
+    color: #ffffff;
+    box-shadow: 0 12px 30px rgba(15, 76, 129, 0.15);
+}
+
+.hero-label {
+    margin-bottom: 10px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    opacity: 0.8;
+}
+
+.dashboard-hero h1 {
+    margin-bottom: 10px;
+    font-size: 2.2rem;
+    font-weight: 700;
+}
+
+.dashboard-hero p {
+    margin: 0;
+    max-width: 600px;
+    font-size: 1rem;
+    opacity: 0.85;
+}
+
+.hero-symbol {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 130px;
+    height: 130px;
+    margin-right: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    font-size: 5rem;
+    font-weight: 200;
+    opacity: 0.2;
+}
+
+
+/* ================================
+   Section Headings
+   ================================ */
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.section-heading h2 {
+    margin-bottom: 4px;
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+.section-heading p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+
+/* ================================
+   Dashboard Cards
+   ================================ */
+
+.dashboard-card {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    min-height: 170px;
+    padding: 26px;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    background: #ffffff;
+    color: inherit;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dashboard-card:hover {
+    color: inherit;
+    transform: translateY(-4px);
+    box-shadow: 0 12px 25px rgba(15, 23, 42, 0.1);
+}
+
+.dashboard-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    margin-right: 18px;
+    border-radius: 13px;
+    background: #eaf4fc;
+    font-size: 1.5rem;
+}
+
+.dashboard-card-content {
+    padding-right: 25px;
+}
+
+.dashboard-card h3 {
+    margin: 4px 0 8px;
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.dashboard-card p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+.card-arrow {
+    position: absolute;
+    right: 22px;
+    bottom: 20px;
+    color: #0f4c81;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+
+/* ================================
+   Admin Information
+   ================================ */
+
+.info-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 22px 24px;
+    border: 1px solid #dbeafe;
+    border-radius: 14px;
+    background: #eff6ff;
+}
+
+.info-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #0f4c81;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.info-banner h3 {
+    margin: 2px 0 5px;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.info-banner p {
+    margin: 0;
+    color: #64748b;
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+
+/* ================================
+   Footer
+   ================================ */
+
+.dashboard-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 4px;
+    border-top: 1px solid #e5e7eb;
+    color: #94a3b8;
+    font-size: 0.78rem;
+}
+
+
+/* ================================
+   Responsive
+   ================================ */
+
+@media (max-width: 768px) {
+
+    .dashboard-hero {
+        min-height: 200px;
+        padding: 30px;
+    }
+
+    .dashboard-hero h1 {
+        font-size: 1.7rem;
+    }
+
+    .hero-symbol {
+        display: none;
+    }
+
+    .dashboard-footer {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+
+@media (max-width: 576px) {
+
+    .dashboard-hero {
+        padding: 25px;
+        border-radius: 14px;
+    }
+
+    .dashboard-hero h1 {
+        font-size: 1.5rem;
+    }
+
+    .dashboard-card {
+        min-height: 150px;
+        padding: 22px;
+    }
 }
