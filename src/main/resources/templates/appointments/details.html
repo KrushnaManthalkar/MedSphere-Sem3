@@ -220,7 +220,7 @@
         </div>
 
 
-        <!-- Status -->
+        <!-- Status Management -->
 
         <div class="col-lg-4">
 
@@ -230,13 +230,21 @@
 
                     <div>
                         <h2>Appointment Status</h2>
-                        <p>Update the current status</p>
+                        <p th:if="${appointment.status.name() == 'SCHEDULED'}">
+                            Update the current status
+                        </p>
+                        <p th:if="${appointment.status.name() != 'SCHEDULED'}">
+                            This appointment is finalized
+                        </p>
                     </div>
 
                 </div>
 
 
-                <div class="card-body p-4">
+                <!-- Scheduled: status can be changed -->
+
+                <div class="card-body p-4"
+                     th:if="${appointment.status.name() == 'SCHEDULED'}">
 
                     <form
                             th:action="@{/reception/appointments/{id}/status(id=${appointment.id})}"
@@ -245,7 +253,6 @@
                         <input type="hidden"
                                th:name="${_csrf.parameterName}"
                                th:value="${_csrf.token}">
-
 
                         <label for="status"
                                class="form-label fw-semibold">
@@ -256,18 +263,15 @@
                                 name="status"
                                 class="form-select mb-3">
 
-                            <option value="SCHEDULED"
-                                    th:selected="${appointment.status.name() == 'SCHEDULED'}">
+                            <option value="SCHEDULED">
                                 Scheduled
                             </option>
 
-                            <option value="COMPLETED"
-                                    th:selected="${appointment.status.name() == 'COMPLETED'}">
+                            <option value="COMPLETED">
                                 Completed
                             </option>
 
-                            <option value="CANCELLED"
-                                    th:selected="${appointment.status.name() == 'CANCELLED'}">
+                            <option value="CANCELLED">
                                 Cancelled
                             </option>
 
@@ -280,6 +284,34 @@
                         </button>
 
                     </form>
+
+                </div>
+
+
+                <!-- Completed / Cancelled: status is locked -->
+
+                <div class="card-body p-4"
+                     th:if="${appointment.status.name() != 'SCHEDULED'}">
+
+                    <div class="status-locked">
+
+                        <div class="status-locked-icon">
+                            ✓
+                        </div>
+
+                        <h3 th:if="${appointment.status.name() == 'COMPLETED'}">
+                            Appointment Completed
+                        </h3>
+
+                        <h3 th:if="${appointment.status.name() == 'CANCELLED'}">
+                            Appointment Cancelled
+                        </h3>
+
+                        <p>
+                            This appointment is finalized and its status cannot be changed.
+                        </p>
+
+                    </div>
 
                 </div>
 
