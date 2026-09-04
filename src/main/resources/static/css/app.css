@@ -9,11 +9,6 @@ body {
     color: #1f2937;
 }
 
-
-/* ================================
-   Login
-   ================================ */
-
 .login-page {
     display: grid;
     place-items: center;
@@ -24,11 +19,6 @@ body {
 .login-page main {
     width: 100%;
 }
-
-
-/* ================================
-   Navbar
-   ================================ */
 
 .med-navbar {
     background: #0f4c81;
@@ -66,11 +56,6 @@ body {
     font-size: 0.9rem;
     font-weight: 600;
 }
-
-
-/* ================================
-   Dashboard
-   ================================ */
 
 .dashboard-page {
     background: #f4f7fb;
@@ -125,11 +110,6 @@ body {
     opacity: 0.2;
 }
 
-
-/* ================================
-   Section Headings
-   ================================ */
-
 .section-heading {
     display: flex;
     align-items: center;
@@ -148,11 +128,6 @@ body {
     color: #6b7280;
     font-size: 0.9rem;
 }
-
-
-/* ================================
-   Dashboard Cards
-   ================================ */
 
 .dashboard-card {
     position: relative;
@@ -213,11 +188,6 @@ body {
     font-weight: 600;
 }
 
-
-/* ================================
-   Admin Information
-   ================================ */
-
 .info-banner {
     display: flex;
     align-items: flex-start;
@@ -254,11 +224,6 @@ body {
     line-height: 1.5;
 }
 
-
-/* ================================
-   Footer
-   ================================ */
-
 .dashboard-footer {
     display: flex;
     justify-content: space-between;
@@ -267,52 +232,6 @@ body {
     color: #94a3b8;
     font-size: 0.78rem;
 }
-
-
-/* ================================
-   Responsive
-   ================================ */
-
-@media (max-width: 768px) {
-
-    .dashboard-hero {
-        min-height: 200px;
-        padding: 30px;
-    }
-
-    .dashboard-hero h1 {
-        font-size: 1.7rem;
-    }
-
-    .hero-symbol {
-        display: none;
-    }
-
-    .dashboard-footer {
-        flex-direction: column;
-        gap: 5px;
-    }
-}
-
-@media (max-width: 576px) {
-
-    .dashboard-hero {
-        padding: 25px;
-        border-radius: 14px;
-    }
-
-    .dashboard-hero h1 {
-        font-size: 1.5rem;
-    }
-
-    .dashboard-card {
-        min-height: 150px;
-        padding: 22px;
-    }
-}
-/* ================================
-   Common Page UI
-   ================================ */
 
 .page-header {
     display: flex;
@@ -341,11 +260,6 @@ body {
     text-transform: uppercase;
 }
 
-
-/* ================================
-   Search Card
-   ================================ */
-
 .search-card {
     padding: 22px 24px;
     border: 1px solid #e5e7eb;
@@ -353,11 +267,6 @@ body {
     background: #ffffff;
     box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
 }
-
-
-/* ================================
-   Content Cards
-   ================================ */
 
 .content-card {
     overflow: hidden;
@@ -396,11 +305,6 @@ body {
     font-size: 0.75rem;
     font-weight: 600;
 }
-
-
-/* ================================
-   Tables
-   ================================ */
 
 .med-table {
     min-width: 900px;
@@ -450,11 +354,6 @@ body {
     text-align: center;
 }
 
-
-/* ================================
-   Patient Details
-   ================================ */
-
 .detail-item {
     display: flex;
     flex-direction: column;
@@ -477,11 +376,6 @@ body {
     font-weight: 600;
     word-break: break-word;
 }
-
-
-/* ================================
-   Empty State
-   ================================ */
 
 .empty-state {
     padding: 55px 20px;
@@ -514,12 +408,56 @@ body {
     font-size: 0.85rem;
 }
 
+.status-locked {
+    padding: 8px 0;
+    text-align: center;
+}
 
-/* ================================
-   Page Responsive
-   ================================ */
+.status-locked-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 14px;
+    border-radius: 50%;
+    background: #ecfdf5;
+    color: #15803d;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.status-locked h3 {
+    margin-bottom: 7px;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.status-locked p {
+    margin: 0;
+    color: #64748b;
+    font-size: 0.84rem;
+    line-height: 1.5;
+}
 
 @media (max-width: 768px) {
+    .dashboard-hero {
+        min-height: 200px;
+        padding: 30px;
+    }
+
+    .dashboard-hero h1 {
+        font-size: 1.7rem;
+    }
+
+    .hero-symbol {
+        display: none;
+    }
+
+    .dashboard-footer {
+        flex-direction: column;
+        gap: 5px;
+    }
 
     .page-header {
         align-items: flex-start;
@@ -537,5 +475,21 @@ body {
 
     .search-card {
         padding: 18px;
+    }
+}
+
+@media (max-width: 576px) {
+    .dashboard-hero {
+        padding: 25px;
+        border-radius: 14px;
+    }
+
+    .dashboard-hero h1 {
+        font-size: 1.5rem;
+    }
+
+    .dashboard-card {
+        min-height: 150px;
+        padding: 22px;
     }
 }
