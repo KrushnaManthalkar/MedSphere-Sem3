@@ -1036,39 +1036,6 @@ The repository now contains a dedicated documentation set for academic submissio
 | [`docs/VIVA_PREPARATION.md`](docs/VIVA_PREPARATION.md) | Viva questions, answers, technical explanations, and demo flow |
 | `PROJECT_CONTEXT.md` | Development history and permanent project context |
 
-### Screenshot File Naming
-
-Final screenshots should be captured from the tested local application and uploaded using the exact paths referenced in the **Project Screenshots** section above.
-
-Recommended location:
-
-```text
-docs/screenshots/
-```
-
-Recommended files:
-
-```text
-docs/screenshots/login-page.png
-docs/screenshots/admin-dashboard.png
-docs/screenshots/receptionist-dashboard.png
-docs/screenshots/doctor-dashboard.png
-docs/screenshots/patient-list.png
-docs/screenshots/patient-profile.png
-docs/screenshots/department-list.png
-docs/screenshots/add-doctor.png
-docs/screenshots/doctor-list.png
-docs/screenshots/appointment-list.png
-docs/screenshots/appointment-details.png
-docs/screenshots/consultation.png
-docs/screenshots/prescription.png
-docs/screenshots/medical-history.png
-docs/screenshots/system-architecture.png
-docs/screenshots/er-diagram.png
-```
-
----
-
 ## 26. Final Submission Checklist
 
 Before academic submission, verify:
