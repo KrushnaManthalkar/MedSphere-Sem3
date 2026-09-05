@@ -509,6 +509,14 @@ MedSphere-Sem3/
 |           |
 |           +-- application.properties
 |
++-- docs/
+|   +-- screenshots/
+|   +-- ER_DIAGRAM.md
+|   +-- DATABASE_DOCUMENTATION.md
+|   +-- PROJECT_REPORT.md
+|   +-- PRESENTATION_OUTLINE.md
+|   +-- VIVA_PREPARATION.md
+|
 +-- .mvn/
 +-- mvnw
 +-- mvnw.cmd
@@ -703,7 +711,85 @@ The current application contains redesigned pages across:
 
 ---
 
-## 15. Testing Performed
+## 15. Project Screenshots
+
+The following image paths are prepared in the same way as the project's other Markdown image references. Capture the final screenshots from the tested local application and upload them using these exact filenames under `docs/screenshots/`.
+
+### Login Page
+
+![Login Page](docs/screenshots/login-page.png)
+
+### Admin Dashboard
+
+![Admin Dashboard](docs/screenshots/admin-dashboard.png)
+
+### Receptionist Dashboard
+
+![Receptionist Dashboard](docs/screenshots/receptionist-dashboard.png)
+
+### Doctor Dashboard
+
+![Doctor Dashboard](docs/screenshots/doctor-dashboard.png)
+
+### Patient Management
+
+![Patient Management](docs/screenshots/patient-list.png)
+
+### Patient Profile
+
+![Patient Profile](docs/screenshots/patient-profile.png)
+
+### Department Management
+
+![Department Management](docs/screenshots/department-list.png)
+
+### Add Doctor
+
+![Add Doctor](docs/screenshots/add-doctor.png)
+
+### Doctor Management
+
+![Doctor Management](docs/screenshots/doctor-list.png)
+
+### Appointment Management
+
+![Appointment Management](docs/screenshots/appointment-list.png)
+
+### Appointment Details
+
+![Appointment Details](docs/screenshots/appointment-details.png)
+
+### Doctor Consultation
+
+![Doctor Consultation](docs/screenshots/consultation.png)
+
+### Prescription
+
+![Prescription](docs/screenshots/prescription.png)
+
+### Medical History
+
+![Medical History](docs/screenshots/medical-history.png)
+
+---
+
+## 16. System Architecture Diagram
+
+![MedSphere System Architecture](docs/screenshots/system-architecture.png)
+
+The architecture follows the layered MVC structure described above: Browser/UI → Controller → Service → Repository → MariaDB/MySQL.
+
+---
+
+## 17. Entity Relationship Diagram
+
+![MedSphere Entity Relationship Diagram](docs/screenshots/er-diagram.png)
+
+For the detailed relationship documentation, see [`docs/ER_DIAGRAM.md`](docs/ER_DIAGRAM.md).
+
+---
+
+## 18. Testing Performed
 
 The project has been manually verified through the running Spring Boot application and MariaDB database.
 
@@ -785,7 +871,7 @@ Validation messages and duplicate-username protection worked as expected.
 
 ---
 
-## 16. Project Development Phases
+## 19. Project Development Phases
 
 The project was developed incrementally.
 
@@ -845,7 +931,7 @@ Prepared the project documentation set, including database documentation, ER doc
 
 ---
 
-## 17. Known Environment Notes
+## 20. Known Environment Notes
 
 - XAMPP MariaDB/MySQL should run on port `3307`.
 - XAMPP Tomcat should remain OFF while running Spring Boot on port `8080`.
@@ -855,7 +941,7 @@ Prepared the project documentation set, including database documentation, ER doc
 
 ---
 
-## 18. Scope Not Included in the Semester 3 Mini Version
+## 21. Scope Not Included in the Semester 3 Mini Version
 
 The following features are intentionally outside the current mini-project scope:
 
@@ -876,7 +962,7 @@ These can be considered for a future major version if required.
 
 ---
 
-## 19. Future Scope
+## 22. Future Scope
 
 Possible future enhancements include:
 
@@ -896,7 +982,7 @@ Possible future enhancements include:
 
 ---
 
-## 20. Academic Project Notes
+## 23. Academic Project Notes
 
 MedSphere is intentionally implemented with a straightforward architecture so that the complete flow can be understood and explained during an academic demonstration or viva.
 
@@ -921,7 +1007,7 @@ Important concepts demonstrated by the project include:
 
 ---
 
-## 21. GitHub Development Rules
+## 24. GitHub Development Rules
 
 The repository uses `main` as the primary branch and is maintained incrementally.
 
@@ -937,7 +1023,7 @@ Development conventions:
 
 ---
 
-## 22. Documentation & Submission Materials
+## 25. Documentation & Submission Materials
 
 The repository now contains a dedicated documentation set for academic submission and presentation.
 
@@ -950,55 +1036,40 @@ The repository now contains a dedicated documentation set for academic submissio
 | [`docs/VIVA_PREPARATION.md`](docs/VIVA_PREPARATION.md) | Viva questions, answers, technical explanations, and demo flow |
 | `PROJECT_CONTEXT.md` | Development history and permanent project context |
 
-### Image and Diagram Placeholders
+### Screenshot File Naming
 
-The documentation intentionally leaves final visual assets for manual insertion by the project owner.
+Final screenshots should be captured from the tested local application and uploaded using the exact paths referenced in the **Project Screenshots** section above.
 
-```text
-[INSERT FINAL ER DIAGRAM IMAGE HERE]
-
-[INSERT FINAL SYSTEM ARCHITECTURE DIAGRAM HERE]
-```
-
-### Screenshot Placeholders
-
-Final screenshots should be captured from the tested local application and inserted manually into the project report/presentation.
-
-Recommended screenshots:
+Recommended location:
 
 ```text
-[INSERT LOGIN SCREENSHOT HERE]
-
-[INSERT ADMIN DASHBOARD SCREENSHOT HERE]
-
-[INSERT RECEPTIONIST DASHBOARD SCREENSHOT HERE]
-
-[INSERT DOCTOR DASHBOARD SCREENSHOT HERE]
-
-[INSERT PATIENT LIST SCREENSHOT HERE]
-
-[INSERT PATIENT PROFILE + MEDICAL HISTORY SCREENSHOT HERE]
-
-[INSERT DEPARTMENT MANAGEMENT SCREENSHOT HERE]
-
-[INSERT ADD DOCTOR SCREENSHOT HERE]
-
-[INSERT DOCTOR PROFILE SCREENSHOT HERE]
-
-[INSERT APPOINTMENT MANAGEMENT SCREENSHOT HERE]
-
-[INSERT CONSULTATION SCREENSHOT HERE]
-
-[INSERT PRESCRIPTION SCREENSHOT HERE]
-
-[INSERT VALIDATION / SECURITY SCREENSHOT HERE]
+docs/screenshots/
 ```
 
-The final report and PPT can therefore be completed by replacing these placeholders with the final screenshots and diagrams.
+Recommended files:
+
+```text
+docs/screenshots/login-page.png
+docs/screenshots/admin-dashboard.png
+docs/screenshots/receptionist-dashboard.png
+docs/screenshots/doctor-dashboard.png
+docs/screenshots/patient-list.png
+docs/screenshots/patient-profile.png
+docs/screenshots/department-list.png
+docs/screenshots/add-doctor.png
+docs/screenshots/doctor-list.png
+docs/screenshots/appointment-list.png
+docs/screenshots/appointment-details.png
+docs/screenshots/consultation.png
+docs/screenshots/prescription.png
+docs/screenshots/medical-history.png
+docs/screenshots/system-architecture.png
+docs/screenshots/er-diagram.png
+```
 
 ---
 
-## 23. Final Submission Checklist
+## 26. Final Submission Checklist
 
 Before academic submission, verify:
 
@@ -1027,9 +1098,9 @@ Before academic submission, verify:
 - [x] Project report draft
 - [x] PPT outline
 - [x] Viva preparation
-- [ ] Final ER image inserted
-- [ ] Final architecture image inserted
-- [ ] Final application screenshots inserted
+- [ ] Final ER image uploaded
+- [ ] Final architecture image uploaded
+- [ ] Final application screenshots uploaded
 - [ ] College-specific report formatting completed
 - [ ] Certificate/declaration pages added if required
 
@@ -1044,7 +1115,7 @@ Before academic submission, verify:
 
 ---
 
-## 24. Current Project Status
+## 27. Current Project Status
 
 **Semester 3 Mini Version: Core implementation complete and documentation prepared.**
 
@@ -1076,6 +1147,6 @@ The remaining work is primarily manual academic submission preparation: insertin
 
 ---
 
-## 25. License / Academic Use
+## 28. License / Academic Use
 
 This project is developed as an academic Semester 3 MCA mini project. It is intended for educational and demonstration purposes and is not presented as a production-ready hospital information system.
