@@ -5,10 +5,10 @@
 **MedSphere – Unified Hospital Information Management System**
 
 - **Current version:** Semester 3 Mini Version
-- **Current status:** Phase 1 complete, Phase 2 complete, Phase 3 complete, Phase 4 complete, Phase 5 complete, Phase 6 complete, Phase 7 complete, Phase 8 complete, Phase 9 complete
-- **Next phase:** To be planned after Phase 9 verification
+- **Current status:** Phase 1 through Phase 13 complete
+- **Phase 13 status:** Documentation foundation completed
 
-This file is the permanent project context and development history. Update it after every approved phase with the implementation details, files changed, tests performed, important decisions, and known issues.
+This file is the permanent project context and development history. It records the implementation details, files, tests, important decisions, and known issues for each completed phase.
 
 ## Current Technology
 
@@ -28,9 +28,10 @@ This file is the permanent project context and development history. Update it af
 - **Host:** `localhost`
 - **Port:** `3307`
 - **Server:** XAMPP MariaDB
+- **Application port:** `8080`
 - **JPA schema mode:** `spring.jpa.hibernate.ddl-auto=update`
 
-The datasource configuration is in `src/main/resources/application.properties` and defaults to the local XAMPP MariaDB instance.
+The datasource configuration is in `src/main/resources/application.properties` and defaults to the local XAMPP MariaDB instance. Environment variables can override the default datasource values.
 
 ## Entity Relationships
 
@@ -58,7 +59,7 @@ Created the core JPA entities and repositories for roles, users, departments, do
 
 Replaced temporary authentication with database-backed users and roles. Added CustomUserDetailsService, BCrypt password encoding, DataInitializer, CSRF protection, login/logout behavior, and role-based URL authorization.
 
-Development-only accounts:
+Development accounts:
 
 | Username | Password | Role |
 | --- | --- | --- |
@@ -73,15 +74,15 @@ Authorization rules:
 | `/admin/**` | `ADMIN` |
 | `/reception/**` | `ADMIN`, `RECEPTIONIST` |
 | `/doctors/**` | `ADMIN`, `DOCTOR` |
-| All other routes | Authenticated users |
+| Other routes | Authenticated users |
 
 ### Phase 4 – Patient Management
 
-Completed patient registration, list/search, profile details, and edit flow at `/reception/patients`. Added PatientForm, service layer, patient validation, generated `MSP-YYYY-000001` patient codes, immutable patient code/registration date, error handling, Bootstrap templates, and role-specific navigation. Verified patient data and authorization in MariaDB.
+Completed patient registration, list/search, profile details, and edit flow at `/reception/patients`. Added PatientForm, service layer, patient validation, generated `MSP-YYYY-000001` patient codes, immutable patient code/registration date, error handling, Bootstrap templates, and role-specific navigation.
 
 ### Phase 5 – Department & Doctor Management
 
-Completed Admin-only Department and Doctor management. Added department and doctor services/forms/controllers/templates, doctor-user linking, department assignment, duplicate validation, and role restrictions. Verified `Phase Five Verification Department` and its doctor profile in the database.
+Completed Admin-only Department and Doctor management. Added department and doctor services/forms/controllers/templates, doctor-user linking, department assignment, duplicate validation, and role restrictions.
 
 ### Phase 6 – Appointment Management
 
@@ -95,7 +96,6 @@ Completed Receptionist/Admin appointment management at `/reception/appointments`
 - Doctor/date/time conflict protection.
 - New appointments start as `SCHEDULED`.
 - Appointment details and controlled status updates.
-- Appointment Management navigation for Admin/Receptionist.
 
 ### Phase 7 – Doctor Consultation
 
@@ -125,221 +125,205 @@ View Consultation
 Consultation Details
 ```
 
-Implemented:
+Implemented doctor appointment listing, ownership checks, consultation DTO/service/repository, consultation form and save routes, duplicate consultation protection, and completed-appointment consultation viewing.
 
-- Doctor appointment list at `/doctors/appointments`.
-- Doctor appointment details at `/doctors/appointments/{id}`.
-- Doctor ownership checks so a doctor can only access their own appointments.
-- Consultation DTO with symptoms, diagnosis, notes, and consultation date.
-- Consultation service and implementation under the existing `service` / `service/impl` structure.
-- Repository lookup by appointment ID and duplicate consultation protection.
-- Consultation form at `/doctors/appointments/{id}/consultation`.
-- Consultation save through POST to the same route.
-- Scheduled appointments only can start a consultation.
-- Successful consultation save changes the appointment status to `COMPLETED`.
-- Consultation details at `/doctors/appointments/{id}/consultation/details`.
-- Appointment Details UI shows `Start Consultation` for scheduled appointments and `View Consultation` for completed appointments.
-- Doctor navigation on the home page through `My Appointments`.
-- Templates are under `src/main/resources/templates/doctors/`.
+Important decisions:
 
-Phase 7 files created or modified:
-
-- `src/main/java/com/medsphere/controller/DoctorAppointmentController.java`
-- `src/main/java/com/medsphere/controller/DoctorAppointmentDetailsController.java`
-- `src/main/java/com/medsphere/controller/DoctorConsultationController.java`
-- `src/main/java/com/medsphere/controller/DoctorConsultationDetailsController.java`
-- `src/main/java/com/medsphere/dto/ConsultationForm.java`
-- `src/main/java/com/medsphere/service/ConsultationService.java`
-- `src/main/java/com/medsphere/service/impl/ConsultationServiceImpl.java`
-- `src/main/java/com/medsphere/repository/ConsultationRepository.java`
-- `src/main/java/com/medsphere/controller/HomeController.java`
-- `src/main/resources/templates/home.html`
-- `src/main/resources/templates/doctors/appointments.html`
-- `src/main/resources/templates/doctors/appointment-details.html`
-- `src/main/resources/templates/doctors/consultation-form.html`
-- `src/main/resources/templates/doctors/consultation-details.html`
-
-Phase 7 tests performed:
-
-- Doctor login succeeded.
-- My Appointments page successfully loaded assigned appointments from MariaDB.
-- Appointment Details page successfully opened for the doctor's appointment.
-- Start Consultation button appeared only for a `SCHEDULED` appointment.
-- Consultation form successfully opened.
-- Consultation was successfully saved with test symptoms, diagnosis, notes, and consultation date.
-- Consultation record was verified in the `consultations` table in the `medsphere` database on XAMPP MariaDB port 3307.
-- Appointment status changed from `SCHEDULED` to `COMPLETED` after successful consultation save.
-- Consultation Details page successfully loaded the saved record.
-- View Consultation button was added for completed appointments.
-- Existing completed appointments do not expose Start Consultation.
-- Doctor ownership checks were implemented in appointment and consultation controllers.
-- Application continues to run on port 8080 with XAMPP Tomcat kept OFF.
-
-Important Phase 7 decisions:
-
-- Standardized doctor-side URL paths under `/doctors/**` and kept Thymeleaf templates under `templates/doctors/`.
-- Kept the existing beginner-friendly layered architecture and did not add unnecessary advanced features.
-- Consultation is one-to-one with Appointment and is located through appointment ID.
-- Consultation creation is limited to scheduled appointments; saving it marks the appointment completed.
-- No prescription, medical history, dashboard, billing, lab, pharmacy, or advanced module work was included in Phase 7.
+- Doctor-side URLs use `/doctors/**` consistently.
+- Consultation is one-to-one with Appointment.
+- Only scheduled appointments can start a consultation.
+- Successful consultation save marks the appointment `COMPLETED`.
 
 ### Phase 8 – Basic Prescription
 
 Completed the basic prescription workflow for the Semester 3 mini version.
 
-Flow:
-
-```text
-Consultation Details
-    ↓
-Add Prescription
-    ↓
-Prescription Form
-    ↓
-Medicine / Dosage / Frequency / Duration / Instructions
-    ↓
-Save Prescription
-    ↓
-Database
-    ↓
-Consultation Details
-    ↓
-Prescription List
-```
-
 Implemented:
 
-- Prescription entity remains linked to Consultation through a mandatory many-to-one relationship.
-- Added `PrescriptionRepository` with lookup by consultation ID.
-- Added `PrescriptionService` and `PrescriptionServiceImpl`.
-- Added `PrescriptionForm` for medicine name, dosage, frequency, duration, and optional instructions.
-- Added `DoctorPrescriptionController` under `/doctors/appointments`.
-- Added GET route `/doctors/appointments/{id}/consultation/prescription` to open the form.
-- Added POST route `/doctors/appointments/{id}/consultation/prescription` to save a prescription.
-- Added doctor ownership checks before accessing or saving a prescription for an appointment.
-- Prescription form includes CSRF protection and required fields for core prescription information.
-- Consultation Details page lists all prescriptions belonging to the consultation.
-- After saving, the user is redirected back to Consultation Details.
-- Kept the implementation basic; no pharmacy inventory, medicine master, billing, or advanced prescription features were added.
+- Prescription repository lookup by consultation ID.
+- Prescription service and implementation.
+- Prescription form for medicine name, dosage, frequency, duration, and optional instructions.
+- Doctor prescription controller under `/doctors/appointments`.
+- Doctor ownership checks.
+- CSRF-protected prescription form.
+- Prescription listing inside Consultation Details.
 
-Phase 8 files created or modified:
-
-- `src/main/java/com/medsphere/repository/PrescriptionRepository.java`
-- `src/main/java/com/medsphere/service/PrescriptionService.java`
-- `src/main/java/com/medsphere/service/impl/PrescriptionServiceImpl.java`
-- `src/main/java/com/medsphere/dto/PrescriptionForm.java`
-- `src/main/java/com/medsphere/controller/DoctorPrescriptionController.java`
-- `src/main/resources/templates/doctors/prescription-form.html`
-- `src/main/resources/templates/doctors/consultation-details.html`
-- `src/main/java/com/medsphere/entity/Prescription.java` was retained as the existing Phase 2 prescription entity.
-
-Phase 8 tests performed:
-
-- Doctor login and doctor appointment access continued to work.
-- Consultation Details page successfully displayed the `+ Add Prescription` button.
-- Prescription form initially exposed a Thymeleaf model error because the controller did not add the `doctor` object to the model; this was fixed with `model.addAttribute("doctor", doctor)`.
-- After the fix, the prescription form successfully opened.
-- Test prescription was successfully saved with medicine `Paracetamol`, dosage `500mg`, frequency `Twice daily`, duration `5 days`, and instruction `After Food`.
-- Saved prescription successfully appeared in the Consultation Details prescription table.
-- Prescription data was successfully persisted and retrieved from MariaDB.
-- Final doctor-side URL convention was standardized to `/doctors/**`.
-
-Important Phase 8 decisions:
-
-- Reused the existing doctor authentication and ownership-check pattern.
-- Kept prescription functionality attached to an existing consultation rather than creating standalone prescriptions.
-- Kept the UI simple and viva-friendly for the Semester 3 mini project.
-- Prescriptions are displayed directly within Consultation Details instead of adding an unnecessary separate prescription-details page.
+A Thymeleaf model error found during testing was fixed by adding the doctor object to the model. A test prescription using Paracetamol was saved and displayed successfully.
 
 ### Phase 9 – Medical History
 
-Completed the basic medical history workflow for the Semester 3 mini version.
-
-Flow:
-
-```text
-Receptionist/Admin
-    ↓
-Patient Profile
-    ↓
-Medical History
-    ↓
-Add Medical History
-    ↓
-Condition / Diagnosis
-Details
-Record Date
-    ↓
-Save
-    ↓
-Database
-    ↓
-Patient Profile
-    ↓
-Medical History List
-```
+Completed the basic medical history workflow.
 
 Implemented:
 
-- Added `MedicalHistoryRepository.findByPatientIdOrderByRecordDateDesc(Long patientId)` for patient-specific history retrieval with newest records first.
-- Added `MedicalHistoryForm` containing condition name, details, and record date.
-- Added `MedicalHistoryService` and `MedicalHistoryServiceImpl` under the existing `service` / `service/impl` structure.
-- Added patient lookup and patient-to-history relationship handling when saving a record.
-- Added `MedicalHistoryController` under `/reception/patients`.
-- Added GET route `/reception/patients/{patientId}/medical-history/new` for the add-history form.
-- Added POST route `/reception/patients/{patientId}/medical-history` for saving a history record.
-- Updated `PatientController` to load medical histories when opening a patient profile.
-- Added `medical-history-form.html` with Condition / Diagnosis, Details, and Record Date fields.
-- Updated `patients/details.html` with a Medical History section, Add Medical History button, empty-state message, and history table.
-- Kept the implementation basic and did not add separate medication/treatment fields, billing, pharmacy, or advanced medical-record features.
+- MedicalHistoryRepository with newest-first patient lookup.
+- MedicalHistoryForm.
+- MedicalHistoryService and implementation.
+- MedicalHistoryController under `/reception/patients`.
+- Patient Profile integration.
+- Add Medical History form and history table.
 
-Phase 9 files created or modified:
+Verified test data:
 
-- `src/main/java/com/medsphere/repository/MedicalHistoryRepository.java`
-- `src/main/java/com/medsphere/dto/MedicalHistoryForm.java`
-- `src/main/java/com/medsphere/service/MedicalHistoryService.java`
-- `src/main/java/com/medsphere/service/impl/MedicalHistoryServiceImpl.java`
-- `src/main/java/com/medsphere/controller/MedicalHistoryController.java`
-- `src/main/java/com/medsphere/controller/PatientController.java`
-- `src/main/resources/templates/patients/medical-history-form.html`
-- `src/main/resources/templates/patients/details.html`
+- Condition: `Fever`
+- Details: `Patient had fever and mild weakness.`
+- Record date: `2026-09-04`
 
-Phase 9 tests performed:
+A Git rebase conflict in MedicalHistoryRepository was safely resolved without losing the implementation.
 
-- Patient Profile successfully displayed the new Medical History section.
-- Add Medical History button successfully opened the form.
-- Test record was successfully saved with condition `Fever`, details `Patient had fever and mild weakness`, and record date `2026-09-04`.
-- Saved medical history successfully appeared in the Patient Profile history table.
-- Patient-to-medical-history relationship and database persistence were successfully verified through the working browser flow.
-- Existing Patient Management flow continued to work.
-- Git rebase conflict caused by concurrent changes to `MedicalHistoryRepository.java` was safely resolved without losing the Medical History implementation; local commits were rebased and successfully pushed to `main`.
-- Final local Git status was verified as up to date with `origin/main` and working tree clean.
+### Phase 10 – Dashboard & UI Redesign
 
-Important Phase 9 decisions:
+Redesigned the main application interface with a common MedSphere navigation system, role-aware dashboard sections, responsive Bootstrap layouts, content cards, page headers, tables, forms, badges, empty states, and status indicators.
 
-- Reused the existing Patient Profile page instead of creating a separate medical-history page.
-- Kept Medical History limited to the existing entity fields: patient, condition name, details, and record date.
-- Kept the workflow under `/reception/**` so existing ADMIN/RECEPTIONIST authorization applies.
-- Used the existing beginner-friendly layered architecture and did not add unnecessary advanced features.
-- Displayed history records newest-first using the repository query method.
+The redesigned UI was applied across the core application pages while preserving existing backend workflows.
 
-## Known Warnings / Environment Notes
+### Phase 11 – UI Consistency Pass
 
-- XAMPP MariaDB/MySQL must be running on port 3307 for local development.
+Audited the complete template set and standardized the UI across:
+
+- Patients: 5 pages
+- Appointments: 3 pages
+- Doctors: 9 pages
+- Departments: 3 pages
+- Login, Home, and Error pages
+- Doctor consultation and prescription pages
+- Medical history page
+
+The audit confirmed 23 application UI pages were covered by the new UI system. No unnecessary backend rewrites were made during this pass.
+
+### Phase 12 – Final Testing & Bug Fixing
+
+Performed end-to-end manual testing of authentication, authorization, patient workflows, department workflows, doctor workflows, appointments, consultations, prescriptions, medical history, validation, duplicate username handling, appointment status restrictions, and database persistence.
+
+Important functionality gap identified and fixed:
+
+- The original Add Doctor workflow required an existing `DOCTOR` user account.
+- This was replaced with an Admin-only workflow that creates the DOCTOR user account and Doctor profile together.
+- The new flow collects username, password, full name, email, department, specialization, and phone.
+- The password is BCrypt encoded.
+- Duplicate usernames are rejected.
+- The newly created doctor can log in and access the doctor workspace.
+
+Final testing also verified that data remained available after stopping and restarting the Spring Boot application, confirming database persistence.
+
+### Phase 13 – Documentation
+
+Completed the initial project documentation foundation directly in the GitHub repository.
+
+Created:
+
+- `README.md` – comprehensive project documentation covering project overview, technology stack, roles, authorization, modules, entity relationships, architecture, project structure, database configuration, setup instructions, routes, validation rules, UI, testing, development phases, known environment notes, scope, future scope, academic notes, and current project status.
+
+Updated:
+
+- `PROJECT_CONTEXT.md` – synchronized project history through Phase 13, including the UI redesign, UI consistency audit, final testing, doctor account creation improvement, database persistence verification, and documentation status.
+
+## Current Application Features
+
+### Authentication and Security
+
+- Database-backed authentication.
+- BCrypt password hashing.
+- Role-based URL authorization.
+- CSRF protection.
+- Login and logout.
+
+### Admin
+
+- Admin dashboard.
+- Department management.
+- Doctor management.
+- New doctor account and profile creation.
+- Patient and appointment access through authorized reception routes.
+
+### Receptionist
+
+- Patient registration and management.
+- Patient search and profile viewing.
+- Patient editing.
+- Medical history creation.
+- Appointment creation, search, filtering, details, and permitted status updates.
+
+### Doctor
+
+- Assigned appointment list.
+- Appointment details.
+- Consultation creation and viewing.
+- Prescription creation and viewing.
+- Doctor ownership checks.
+
+## Important Business Rules
+
+- Only ADMIN can access `/admin/**`.
+- ADMIN and RECEPTIONIST can access `/reception/**`.
+- ADMIN and DOCTOR can access `/doctors/**`.
+- Doctor usernames must be unique.
+- Newly created doctor passwords are BCrypt encoded.
+- A User account can be linked to at most one Doctor profile.
+- Appointment doctor/date/time conflicts are prevented.
+- New appointments start as `SCHEDULED`.
+- Only scheduled appointments can use the controlled status update flow.
+- Completed and cancelled appointments are locked from further status changes.
+- Only scheduled appointments can start a consultation.
+- Saving a consultation changes the appointment to `COMPLETED`.
+- Doctors can access only their own assigned appointment workflows.
+- Medical history belongs to an existing patient and is shown newest-first.
+
+## Important Routes
+
+### General
+
+- `/login`
+- `/`
+
+### Admin
+
+- `/admin/departments`
+- `/admin/departments/new`
+- `/admin/doctors`
+- `/admin/doctors/new`
+
+### Reception
+
+- `/reception/patients`
+- `/reception/appointments`
+- `/reception/patients/{patientId}/medical-history/new`
+
+### Doctor
+
+- `/doctors/appointments`
+- `/doctors/appointments/{id}`
+- `/doctors/appointments/{id}/consultation`
+- `/doctors/appointments/{id}/consultation/details`
+- `/doctors/appointments/{id}/consultation/prescription`
+
+## Known Environment Notes
+
+- XAMPP MariaDB/MySQL must run on port 3307 for local development.
 - XAMPP Tomcat must remain OFF because Spring Boot uses embedded Tomcat on port 8080.
-- Hibernate may warn that explicitly configuring `MySQLDialect` is unnecessary and may report MariaDB compatibility details.
-- Spring may warn that `spring.jpa.open-in-view` is enabled by default.
-- These warnings currently do not prevent the application from running.
+- Maven does not need to be installed globally because the project includes Maven Wrapper.
+- Hibernate may warn that explicitly configuring `MySQLDialect` is unnecessary. This currently does not block application startup.
+- Spring may warn that `spring.jpa.open-in-view` is enabled by default. This currently does not block application startup.
 
 ## Development Rules
 
 - GitHub repository `KrushnaManthalkar/MedSphere-Sem3` on `main` is the source of truth.
 - Keep changes incremental and beginner-friendly.
 - Avoid unnecessary rewrites of completed phases.
-- Preserve existing verification data unless there is an approved reason to remove it.
-- Update this `PROJECT_CONTEXT.md` at the end of each completed phase.
-- Use `/doctors/**` consistently for doctor-side URL paths; Java class/entity names such as `Doctor` remain singular where grammatically appropriate.
+- Preserve existing verification data unless an approved reason exists to remove it.
+- Update this `PROJECT_CONTEXT.md` after meaningful phases.
+- Use `/doctors/**` consistently for doctor-side URLs.
+- Java class/entity names such as `Doctor` remain singular where grammatically appropriate.
 
-## Next Objective
+## Documentation / Submission Next Steps
 
-To be planned after Phase 9 verification. Before starting a new feature, review the current repository and preserve the working Phase 9 medical history flow.
+The core Semester 3 mini application and documentation foundation are complete. Remaining academic submission work can include:
+
+1. Capture final application screenshots.
+2. Prepare a polished ER diagram.
+3. Prepare a system architecture diagram.
+4. Prepare database/table documentation.
+5. Prepare detailed project report.
+6. Prepare presentation/PPT.
+7. Prepare viva questions and answers.
+8. Perform a final GitHub repository cleanup before submission.
