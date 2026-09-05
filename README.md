@@ -57,7 +57,7 @@ This version is the **Semester 3 mini version**. It intentionally focuses on the
 | Maven Wrapper | Build and dependency management |
 | XAMPP | Local MariaDB database environment |
 
-The project's Maven configuration defines Spring Web, Thymeleaf, Security, Data JPA, Validation, MySQL Connector/J, and Spring testing dependencies. 
+The project's Maven configuration defines Spring Web, Thymeleaf, Security, Data JPA, Validation, MySQL Connector/J, and Spring testing dependencies.
 
 ---
 
@@ -425,8 +425,8 @@ MedSphere follows a simple layered MVC architecture designed to remain understan
                 |
                 v
 +-------------------------------+
-|          Service Layer        |
-| Business Logic                |
+|          Service Layer         |
+| Business Logic                 |
 +---------------+---------------+
                 |
                 v
@@ -543,6 +543,8 @@ spring.datasource.password=${MEDSPHERE_DB_PASSWORD:}
 ```
 
 For local development, XAMPP MariaDB should be running on port `3307`.
+
+For the complete database design, see [`docs/DATABASE_DOCUMENTATION.md`](docs/DATABASE_DOCUMENTATION.md).
 
 ---
 
@@ -835,11 +837,11 @@ Reviewed the application pages and applied the common UI system consistently acr
 
 Performed end-to-end manual testing covering authentication, role authorization, CRUD workflows, consultation/prescription workflows, validation, duplicate doctor usernames, status restrictions, and database persistence after application restart.
 
-An important functionality gap found during testing was the old doctor creation flow, which required an existing DOCTOR user account. This was replaced with Admin-only creation of a new DOCTOR user account and Doctor profile in a single workflow.
+An important functionality gap found during testing was the old doctor creation flow, which required an existing DOCTOR user. This was replaced with Admin-only creation of a new DOCTOR user account and Doctor profile in a single workflow.
 
 ### Phase 13 – Documentation
 
-Prepared the project documentation structure, including this README and the permanent development context document.
+Prepared the project documentation set, including database documentation, ER documentation, project report draft, presentation outline, viva preparation, and this README.
 
 ---
 
@@ -935,9 +937,116 @@ Development conventions:
 
 ---
 
-## 22. Current Project Status
+## 22. Documentation & Submission Materials
 
-**Semester 3 Mini Version: Core implementation complete.**
+The repository now contains a dedicated documentation set for academic submission and presentation.
+
+| Document | Purpose |
+| --- | --- |
+| [`docs/ER_DIAGRAM.md`](docs/ER_DIAGRAM.md) | Current entity relationships and ER design |
+| [`docs/DATABASE_DOCUMENTATION.md`](docs/DATABASE_DOCUMENTATION.md) | Tables, columns, keys, relationships, constraints, and database notes |
+| [`docs/PROJECT_REPORT.md`](docs/PROJECT_REPORT.md) | Master Semester 3 project report draft |
+| [`docs/PRESENTATION_OUTLINE.md`](docs/PRESENTATION_OUTLINE.md) | Slide-by-slide PPT structure and speaker points |
+| [`docs/VIVA_PREPARATION.md`](docs/VIVA_PREPARATION.md) | Viva questions, answers, technical explanations, and demo flow |
+| `PROJECT_CONTEXT.md` | Development history and permanent project context |
+
+### Image and Diagram Placeholders
+
+The documentation intentionally leaves final visual assets for manual insertion by the project owner.
+
+```text
+[INSERT FINAL ER DIAGRAM IMAGE HERE]
+
+[INSERT FINAL SYSTEM ARCHITECTURE DIAGRAM HERE]
+```
+
+### Screenshot Placeholders
+
+Final screenshots should be captured from the tested local application and inserted manually into the project report/presentation.
+
+Recommended screenshots:
+
+```text
+[INSERT LOGIN SCREENSHOT HERE]
+
+[INSERT ADMIN DASHBOARD SCREENSHOT HERE]
+
+[INSERT RECEPTIONIST DASHBOARD SCREENSHOT HERE]
+
+[INSERT DOCTOR DASHBOARD SCREENSHOT HERE]
+
+[INSERT PATIENT LIST SCREENSHOT HERE]
+
+[INSERT PATIENT PROFILE + MEDICAL HISTORY SCREENSHOT HERE]
+
+[INSERT DEPARTMENT MANAGEMENT SCREENSHOT HERE]
+
+[INSERT ADD DOCTOR SCREENSHOT HERE]
+
+[INSERT DOCTOR PROFILE SCREENSHOT HERE]
+
+[INSERT APPOINTMENT MANAGEMENT SCREENSHOT HERE]
+
+[INSERT CONSULTATION SCREENSHOT HERE]
+
+[INSERT PRESCRIPTION SCREENSHOT HERE]
+
+[INSERT VALIDATION / SECURITY SCREENSHOT HERE]
+```
+
+The final report and PPT can therefore be completed by replacing these placeholders with the final screenshots and diagrams.
+
+---
+
+## 23. Final Submission Checklist
+
+Before academic submission, verify:
+
+### Application
+
+- [x] Core modules implemented
+- [x] Authentication tested
+- [x] Role-based authorization tested
+- [x] Patient workflow tested
+- [x] Department workflow tested
+- [x] Doctor workflow tested
+- [x] Doctor account creation tested
+- [x] Appointment workflow tested
+- [x] Consultation workflow tested
+- [x] Prescription workflow tested
+- [x] Medical history workflow tested
+- [x] Database persistence tested
+- [x] Validation tested
+
+### Documentation
+
+- [x] README
+- [x] PROJECT_CONTEXT
+- [x] ER documentation
+- [x] Database documentation
+- [x] Project report draft
+- [x] PPT outline
+- [x] Viva preparation
+- [ ] Final ER image inserted
+- [ ] Final architecture image inserted
+- [ ] Final application screenshots inserted
+- [ ] College-specific report formatting completed
+- [ ] Certificate/declaration pages added if required
+
+### Final Presentation
+
+- [ ] PPT completed from the presentation outline
+- [ ] Screenshots inserted
+- [ ] ER diagram inserted
+- [ ] Architecture diagram inserted
+- [ ] Live demo data prepared
+- [ ] Viva questions revised
+
+---
+
+## 24. Current Project Status
+
+**Semester 3 Mini Version: Core implementation complete and documentation prepared.**
 
 Completed areas:
 
@@ -957,12 +1066,16 @@ Completed areas:
 - UI consistency pass
 - End-to-end manual testing
 - Database persistence verification
-- Project documentation foundation
+- ER documentation
+- Database documentation
+- Project report draft
+- Presentation outline
+- Viva preparation
 
-The next work can focus on final academic submission materials such as screenshots, ER diagram, architecture diagram, project report, presentation, and viva preparation.
+The remaining work is primarily manual academic submission preparation: inserting final screenshots/diagrams, applying college-specific report formatting, completing the PPT, and rehearsing the viva/demo.
 
 ---
 
-## 23. License / Academic Use
+## 25. License / Academic Use
 
 This project is developed as an academic Semester 3 MCA mini project. It is intended for educational and demonstration purposes and is not presented as a production-ready hospital information system.
