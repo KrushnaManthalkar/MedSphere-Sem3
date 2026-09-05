@@ -1,7 +1,28 @@
+# Maven build output
 target/
+
+# IDE files
 .idea/
 *.iml
 .classpath
 .project
 .settings/
+.factorypath/
+bin/
+
+# Local environment and secrets
 .env
+.env.*
+!.env.example
+application-local.properties
+
+# Logs
+*.log
+logs/
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Local runtime files
+*.pid
