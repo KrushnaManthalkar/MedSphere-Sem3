@@ -65,10 +65,10 @@
                 ADMINISTRATION
             </div>
 
-            <h1>Add Doctor Profile</h1>
+            <h1>Add Doctor</h1>
 
             <p>
-                Create a doctor profile using an existing DOCTOR user account.
+                Create a doctor account and professional profile.
             </p>
 
         </div>
@@ -81,8 +81,11 @@
         <div class="content-card-header">
 
             <div>
-                <h2>Doctor Information</h2>
-                <p>Enter the professional details of the doctor</p>
+                <h2>Doctor Account &amp; Profile</h2>
+                <p>
+                    Enter the login credentials and professional details
+                    for the new doctor.
+                </p>
             </div>
 
         </div>
@@ -90,8 +93,16 @@
 
         <div class="card-body p-4">
 
+            <!-- Creation Error -->
+
+            <div class="alert alert-danger"
+                 th:if="${createError != null}"
+                 th:text="${createError}">
+            </div>
+
+
             <form th:action="@{/admin/doctors}"
-                  th:object="${doctorForm}"
+                  th:object="${doctorCreateForm}"
                   method="post">
 
                 <input type="hidden"
@@ -99,111 +110,115 @@
                        th:value="${_csrf.token}">
 
 
-                <div class="row g-4">
+                <!-- Account Information -->
 
-                    <!-- Doctor User -->
+                <div class="mb-4">
 
-                    <div class="col-md-6">
+                    <div class="mb-3">
 
-                        <label for="userId"
-                               class="form-label fw-semibold">
-                            Doctor User *
-                        </label>
+                        <h3 class="h5 mb-1">
+                            Account Information
+                        </h3>
 
-                        <select id="userId"
-                                class="form-select"
-                                th:field="*{userId}"
-                                th:errorclass="is-invalid">
-
-                            <option value="">
-                                Select doctor user
-                            </option>
-
-                            <option th:each="user : ${doctorUsers}"
-                                    th:value="${user.id}"
-                                    th:text="${user.fullName + ' (' + user.username + ')'}">
-                            </option>
-
-                        </select>
-
-                        <div class="invalid-feedback"
-                             th:errors="*{userId}">
-                        </div>
+                        <p class="text-muted mb-0">
+                            These details will be used by the doctor
+                            to log in to MedSphere.
+                        </p>
 
                     </div>
 
 
-                    <!-- Department -->
+                    <div class="row g-4">
 
-                    <div class="col-md-6">
+                        <!-- Username -->
 
-                        <label for="departmentId"
-                               class="form-label fw-semibold">
-                            Department *
-                        </label>
+                        <div class="col-md-6">
 
-                        <select id="departmentId"
-                                class="form-select"
-                                th:field="*{departmentId}"
-                                th:errorclass="is-invalid">
+                            <label for="username"
+                                   class="form-label fw-semibold">
+                                Username *
+                            </label>
 
-                            <option value="">
-                                Select department
-                            </option>
+                            <input id="username"
+                                   type="text"
+                                   class="form-control"
+                                   th:field="*{username}"
+                                   th:errorclass="is-invalid"
+                                   placeholder="e.g. dr_rahul">
 
-                            <option th:each="department : ${departments}"
-                                    th:value="${department.id}"
-                                    th:text="${department.name}">
-                            </option>
+                            <div class="invalid-feedback"
+                                 th:errors="*{username}">
+                            </div>
 
-                        </select>
-
-                        <div class="invalid-feedback"
-                             th:errors="*{departmentId}">
                         </div>
 
-                    </div>
 
+                        <!-- Password -->
 
-                    <!-- Specialization -->
+                        <div class="col-md-6">
 
-                    <div class="col-md-6">
+                            <label for="password"
+                                   class="form-label fw-semibold">
+                                Password *
+                            </label>
 
-                        <label for="specialization"
-                               class="form-label fw-semibold">
-                            Specialization *
-                        </label>
+                            <input id="password"
+                                   type="password"
+                                   class="form-control"
+                                   th:field="*{password}"
+                                   th:errorclass="is-invalid"
+                                   placeholder="Minimum 6 characters">
 
-                        <input id="specialization"
-                               class="form-control"
-                               th:field="*{specialization}"
-                               th:errorclass="is-invalid"
-                               placeholder="e.g. General Medicine">
+                            <div class="invalid-feedback"
+                                 th:errors="*{password}">
+                            </div>
 
-                        <div class="invalid-feedback"
-                             th:errors="*{specialization}">
                         </div>
 
-                    </div>
+
+                        <!-- Full Name -->
+
+                        <div class="col-md-6">
+
+                            <label for="fullName"
+                                   class="form-label fw-semibold">
+                                Full Name *
+                            </label>
+
+                            <input id="fullName"
+                                   type="text"
+                                   class="form-control"
+                                   th:field="*{fullName}"
+                                   th:errorclass="is-invalid"
+                                   placeholder="Enter doctor's full name">
+
+                            <div class="invalid-feedback"
+                                 th:errors="*{fullName}">
+                            </div>
+
+                        </div>
 
 
-                    <!-- Phone -->
+                        <!-- Email -->
 
-                    <div class="col-md-6">
+                        <div class="col-md-6">
 
-                        <label for="phone"
-                               class="form-label fw-semibold">
-                            Phone *
-                        </label>
+                            <label for="email"
+                                   class="form-label fw-semibold">
+                                Email
+                            </label>
 
-                        <input id="phone"
-                               class="form-control"
-                               th:field="*{phone}"
-                               th:errorclass="is-invalid"
-                               placeholder="Enter phone number">
+                            <input id="email"
+                                   type="email"
+                                   class="form-control"
+                                   th:field="*{email}"
+                                   th:errorclass="is-invalid"
+                                   placeholder="doctor@example.com">
 
-                        <div class="invalid-feedback"
-                             th:errors="*{phone}">
+                            <div class="invalid-feedback"
+                                 th:errors="*{email}">
+                            </div>
+
                         </div>
 
                     </div>
@@ -213,6 +228,112 @@
 
                 <hr class="my-4">
 
+
+                <!-- Professional Information -->
+
+                <div class="mb-4">
+
+                    <div class="mb-3">
+
+                        <h3 class="h5 mb-1">
+                            Professional Information
+                        </h3>
+
+                        <p class="text-muted mb-0">
+                            Enter the doctor's department and professional details.
+                        </p>
+
+                    </div>
+
+
+                    <div class="row g-4">
+
+                        <!-- Department -->
+
+                        <div class="col-md-6">
+
+                            <label for="departmentId"
+                                   class="form-label fw-semibold">
+                                Department *
+                            </label>
+
+                            <select id="departmentId"
+                                    class="form-select"
+                                    th:field="*{departmentId}"
+                                    th:errorclass="is-invalid">
+
+                                <option value="">
+                                    Select department
+                                </option>
+
+                                <option th:each="department : ${departments}"
+                                        th:value="${department.id}"
+                                        th:text="${department.name}">
+                                </option>
+
+                            </select>
+
+                            <div class="invalid-feedback"
+                                 th:errors="*{departmentId}">
+                            </div>
+
+                        </div>
+
+
+                        <!-- Specialization -->
+
+                        <div class="col-md-6">
+
+                            <label for="specialization"
+                                   class="form-label fw-semibold">
+                                Specialization *
+                            </label>
+
+                            <input id="specialization"
+                                   type="text"
+                                   class="form-control"
+                                   th:field="*{specialization}"
+                                   th:errorclass="is-invalid"
+                                   placeholder="e.g. General Medicine">
+
+                            <div class="invalid-feedback"
+                                 th:errors="*{specialization}">
+                            </div>
+
+                        </div>
+
+
+                        <!-- Phone -->
+
+                        <div class="col-md-6">
+
+                            <label for="phone"
+                                   class="form-label fw-semibold">
+                                Phone *
+                            </label>
+
+                            <input id="phone"
+                                   type="text"
+                                   class="form-control"
+                                   th:field="*{phone}"
+                                   th:errorclass="is-invalid"
+                                   placeholder="Enter phone number">
+
+                            <div class="invalid-feedback"
+                                 th:errors="*{phone}">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <hr class="my-4">
+
+
+                <!-- Actions -->
 
                 <div class="d-flex justify-content-end gap-2">
 
