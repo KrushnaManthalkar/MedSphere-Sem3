@@ -1,0 +1,477 @@
+# MedSphere – Database Documentation
+
+## 1. Database Overview
+
+MedSphere uses a relational database to persist users, roles, departments, doctors, patients, appointments, consultations, prescriptions, and medical history.
+
+### Local Development Configuration
+
+| Property | Value |
+| --- | --- |
+| Database | `medsphere` |
+| DBMS | MariaDB / MySQL |
+| Host | `localhost` |
+| Port | `3307` |
+| Application Port | `8080` |
+| ORM | Hibernate through Spring Data JPA |
+| Schema Management | `spring.jpa.hibernate.ddl-auto=update` |
+
+The local database is normally provided by XAMPP MariaDB.
+
+---
+
+## 2. Database Design Principles
+
+The database follows a relational design with:
+
+- Primary keys for unique row identification.
+- Foreign keys for relationships between entities.
+- Unique constraints where duplicate values must be prevented.
+- JPA relationships for object-relational mapping.
+- Enum values for controlled role and appointment-status values.
+- Separate tables for independent business concepts.
+
+The current Semester 3 version intentionally excludes tables for billing, pharmacy inventory, laboratory management, wards, beds, and other future-scope features.
+
+---
+
+## 3. Tables / Entities
+
+The current application contains the following main persistent entities:
+
+1. `roles`
+2. `users`
+3. `departments`
+4. `doctors`
+5. `patients`
+6. `appointments`
+7. `consultations`
+8. `prescriptions`
+9. `medical_history`
+
+---
+
+## 4. Roles Table
+
+### Purpose
+
+Stores the security roles used by Spring Security.
+
+### Main Columns
+
+| Column | Type / Mapping | Key / Constraint | Description |
+| --- | --- | --- | --- |
+| `id` | Long / BIGINT | PK | Unique role identifier |
+| `role_name` | RoleType / ENUM-like mapping | Unique | Role name |
+
+### Current Values
+
+- `ADMIN`
+- `RECEPTIONIST`
+- `DOCTOR`
+
+### Relationship
+
+One Role can be associated with many Users.
+
+```text
+ROLE 1 ── * USER
+```
+
+---
+
+## 5. Users Table
+
+### Purpose
+
+Stores application login accounts and user information.
+
+### Main Columns
+
+| Column | Type / Mapping | Key / Constraint | Description |
+| --- | --- | --- | --- |
+| `id` | Long / BIGINT | PK | Unique user identifier |
+| `username` | String | Unique | Login username |
+| `password` | String | Required | BCrypt-hashed password |
+| `full_name` | String | Required | User's full name |
+| `email` | String | Optional | User email address |
+| `active` | Boolean | Required | Whether the account is active |
+| `role_id` | Foreign key | FK, required | References the user's Role |
+
+### Security Notes
+
+Passwords are not stored as plain text. The application uses Spring Security's `BCryptPasswordEncoder` for password encoding.
+
+### Relationship
+
+```text
+ROLE 1 ── * USER
+USER 1 ── 0..1 DOCTOR
+```
+
+---
+
+## 6. Departments Table
+
+### Purpose
+
+Stores hospital departments to which doctors can be assigned.
+
+### Main Columns
+
+| Column | Type / Mapping | Key / Constraint | Description |
+| --- | --- | --- | --- |
+| `id` | Long / BIGINT | PK | Unique department identifier |
+| `name` | String | Unique | Department name |
+| `description` | String | Optional | Department description |
+
+### Relationship
+
+One Department can contain many Doctor profiles.
+
+```text
+DEPARTMENT 1 ── * DOCTOR
+```
+
+---
+
+## 7. Doctors Table
+
+### Purpose
+
+Stores professional information for doctors and links each Doctor profile to a User account.
+
+### Main Columns
+
+| Column | Type / Mapping | Key / Constraint | Description |
+| --- | --- | --- | --- |
+| `id` | Long / BIGINT | PK | Unique doctor identifier |
+| `user_id` | Foreign key | FK, Unique | Linked login account |
+| `department_id` | Foreign key | FK | Assigned department |
+| `specialization` | String | Required | Doctor specialization |
+| `phone` | String | Required | Doctor phone number |
+
+### Important Constraint
+
+`user_id` is unique so a single User account cannot be linked to multiple Doctor profiles.
+
+### Relationships
+
+```text
+USER 1 ── 0..1 DOCTOR
+DEPARTMENT 1 ── * DOCTOR
+DOCTOR 1 ── * APPOINTMENT
+```
+
+---
+
+## 8. Patients Table
+
+### Purpose
+
+Stores patient registration, demographic, and contact information.
+
+### Main Columns
+
+| Column | Type / Mapping | Key / Constraint | Description |
+| --- | --- | --- | --- |
+| `id` | Long / BIGINT | PK | Unique patient identifier |
+| `patient_code` | String | Unique | Generated patient registration code |
+| `name` | String | Required | Patient name |
+| `date_of_birth` | Date | Required | Patient date of birth |
+| `gender` | String | Required | Patient gender |
+| `blood_group` | String | Optional | Blood group |
+| `phone` | String | Required | Contact number |
+| `email` | String | Optional | Email address |
+| `address` | String | Optional | Address |
+| `emergency_contact` | String | Optional | Emergency contact |
+| `registration_date` | Date | Required | Registration date |
+
+### Patient Code
+
+Patient codes follow the format:
+
+```text
+MSP-YYYY-000001
+```
+
+The code and registration date are generated by the service layer during registration and are intentionally not overwritten during normal patient editing.
+
+### Relationships
+
+```text
+PATIENT 1 ── * APPOINTMENT
+PATIENT 1 ── * MEDICAL_HISTORY
+```
+
+---
+
+## 9. Appointments Table
+
+### Purpose
+
+Stores scheduled interactions between patients and doctors.
+
+### Main Columns
+
+| Column | Type / Mapping | Key / Constraint | Description |
+| --- | --- | --- | --- |
+| `id` | Long / BIGINT | PK | Unique appointment identifier |
+| `patient_id` | Foreign key | FK, required | Patient for the appointment |
+| `doctor_id` | Foreign key | FK, required | Doctor for the appointment |
+| `appointment_date` | Date | Required | Appointment date |
+| `appointment_time` | Time | Required | Appointment time |
+| `status` | AppointmentStatus | Required | Current appointment state |
+| `reason` | String | Required | Reason for visit |
+
+### Status Values
+
+```text
+SCHEDULED
+COMPLETED
+CANCELLED
+```
+
+### Business Rules
+
+- New appointments start as `SCHEDULED`.
+- Doctor/date/time conflicts are prevented.
+- Only scheduled appointments can use the controlled status-update workflow.
+- Completed and cancelled appointments are locked from further status changes.
+
+### Relationships
+
+```text
+PATIENT 1 ── * APPOINTMENT * ── 1 DOCTOR
+APPOINTMENT 1 ── 0..1 CONSULTATION
+```
+
+---
+
+## 10. Consultations Table
+
+### Purpose
+
+Stores clinical information recorded by a doctor for an appointment.
+
+### Main Columns
+
+| Column | Type / Mapping | Key / Constraint | Description |
+| --- | --- | --- | --- |
+| `id` | Long / BIGINT | PK | Unique consultation identifier |
+| `appointment_id` | Foreign key | FK, Unique | Appointment being consulted |
+| `symptoms` | Text/String | Application-defined | Patient symptoms |
+| `diagnosis` | Text/String | Application-defined | Doctor diagnosis |
+| `notes` | Text/String | Optional | Additional consultation notes |
+| `consultation_date` | Date | Required | Date of consultation |
+
+### Relationship
+
+The current model allows one Consultation for one Appointment.
+
+```text
+APPOINTMENT 1 ── 0..1 CONSULTATION
+```
+
+When a consultation is successfully saved, the associated appointment becomes `COMPLETED`.
+
+---
+
+## 11. Prescriptions Table
+
+### Purpose
+
+Stores medicines prescribed during a consultation.
+
+### Main Columns
+
+| Column | Type / Mapping | Key / Constraint | Description |
+| --- | --- | --- | --- |
+| `id` | Long / BIGINT | PK | Unique prescription identifier |
+| `consultation_id` | Foreign key | FK, required | Consultation to which the prescription belongs |
+| `medicine_name` | String | Required | Medicine name |
+| `dosage` | String | Required | Dosage information |
+| `frequency` | String | Required | Frequency of medicine use |
+| `duration` | String | Required | Duration of treatment |
+| `instructions` | String | Optional | Additional instructions |
+
+### Relationship
+
+```text
+CONSULTATION 1 ── * PRESCRIPTION
+```
+
+A consultation can therefore contain multiple prescription records.
+
+---
+
+## 12. Medical History Table
+
+### Purpose
+
+Stores historical medical records associated with a patient.
+
+### Main Columns
+
+| Column | Type / Mapping | Key / Constraint | Description |
+| --- | --- | --- | --- |
+| `id` | Long / BIGINT | PK | Unique history record identifier |
+| `patient_id` | Foreign key | FK, required | Patient associated with the record |
+| `condition_name` | String | Required | Condition / diagnosis name |
+| `details` | Text/String | Optional | Additional record details |
+| `record_date` | Date | Required | Date of the historical record |
+
+### Relationship
+
+```text
+PATIENT 1 ── * MEDICAL_HISTORY
+```
+
+Medical history records are retrieved newest-first for display on the patient profile.
+
+---
+
+## 13. Complete Relationship Map
+
+```text
+ROLE
+  │
+  └──── 1 : Many ──── USER
+                         │
+                         └──── 1 : 0..1 ──── DOCTOR
+                                                │
+DEPARTMENT ───── 1 : Many ─────────────────────┘
+                                                │
+                                                └──── 1 : Many ──── APPOINTMENT
+                                                                      │
+PATIENT ───── 1 : Many ───────────────────────────────────────────────┘
+  │                                                                   │
+  │                                                                   └──── 1 : 0..1 ──── CONSULTATION
+  │                                                                                         │
+  └──── 1 : Many ──── MEDICAL_HISTORY                                  1 : Many ──────────┘
+                                                                                         │
+                                                                                         v
+                                                                                   PRESCRIPTION
+```
+
+Simplified relationship list:
+
+```text
+Role 1 ── * User
+Department 1 ── * Doctor
+User 1 ── 0..1 Doctor
+Patient 1 ── * Appointment * ── 1 Doctor
+Appointment 1 ── 0..1 Consultation
+Consultation 1 ── * Prescription
+Patient 1 ── * MedicalHistory
+```
+
+---
+
+## 14. Primary Key and Foreign Key Summary
+
+| Table | Primary Key | Foreign Keys |
+| --- | --- | --- |
+| `roles` | `id` | — |
+| `users` | `id` | `role_id` → `roles.id` |
+| `departments` | `id` | — |
+| `doctors` | `id` | `user_id` → `users.id`, `department_id` → `departments.id` |
+| `patients` | `id` | — |
+| `appointments` | `id` | `patient_id` → `patients.id`, `doctor_id` → `doctors.id` |
+| `consultations` | `id` | `appointment_id` → `appointments.id` |
+| `prescriptions` | `id` | `consultation_id` → `consultations.id` |
+| `medical_history` | `id` | `patient_id` → `patients.id` |
+
+---
+
+## 15. Important Constraints
+
+### User
+
+- Username must be unique.
+- Role is required.
+- Password is stored in encoded form.
+
+### Department
+
+- Department name is unique.
+
+### Doctor
+
+- User reference is unique.
+- Department is required.
+- Specialization is required.
+- Phone is required.
+
+### Patient
+
+- Patient code is unique.
+- Registration code and registration date are generated by the application.
+- Required patient fields are validated before persistence.
+
+### Appointment
+
+- Patient and Doctor references are required.
+- Date and time are required.
+- Status is controlled through the application enum.
+- Doctor/date/time conflicts are rejected.
+
+### Consultation
+
+- Appointment reference is unique.
+- A consultation belongs to an appointment.
+
+### Prescription
+
+- Consultation reference is required.
+- Medicine, dosage, frequency, and duration are required.
+- Instructions are optional.
+
+### Medical History
+
+- Patient reference is required.
+- Condition name and record date are required.
+- Details are optional.
+
+---
+
+## 16. Database Persistence and Startup
+
+Hibernate manages the database schema through JPA entity mappings. During local development the application uses:
+
+```properties
+spring.jpa.hibernate.ddl-auto=update
+```
+
+This allows the schema to be updated according to the current entity mappings without manually recreating the database for normal development changes.
+
+The application was tested by stopping and restarting Spring Boot and verifying that previously created records remained available.
+
+---
+
+## 17. Database Security Notes
+
+- Passwords are BCrypt encoded.
+- Database credentials can be supplied through environment variables.
+- The default local configuration is intended for development.
+- Production database credentials should not be hard-coded.
+- Production deployments should use a dedicated database user rather than the XAMPP `root` development account.
+
+---
+
+## 18. Future Database Scope
+
+If MedSphere is extended into a major version, additional database modules could include:
+
+- Billing and invoices
+- Payments
+- Pharmacy inventory
+- Medicine master
+- Laboratory tests and reports
+- Ward and bed allocation
+- Notifications
+- Doctor availability schedules
+- Audit logs
+- Patient portal data
+
+These are future-scope items and are not part of the current Semester 3 database.
