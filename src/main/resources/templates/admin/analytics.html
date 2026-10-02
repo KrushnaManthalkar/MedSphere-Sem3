@@ -39,12 +39,12 @@
         <div class="col-sm-6 col-xl-3"><div class="content-card p-4 h-100"><div class="page-eyebrow">SELECTED PERIOD</div><div class="display-6 fw-bold" th:text="${totalVisits}">0</div><div class="text-secondary small">Total appointments</div></div></div>
     </div>
     <div class="row g-4">
-        <div class="col-xl-7"><div class="content-card h-100"><div class="content-card-header"><div><h2>Monthly New Patient Trend</h2><p>Registrations during <span th:text="${selectedYear}">2026</span>.</p></div></div>
-            <div class="table-responsive"><table class="table med-table mb-0"><thead><tr><th>Month</th><th class="text-end">New Patients</th></tr></thead><tbody>
+        <div class="col-xl-6"><div class="content-card h-100"><div class="content-card-header"><div><h2>Monthly New Patient Trend</h2><p>Registrations during <span th:text="${selectedYear}">2026</span>.</p></div></div>
+            <div class="table-responsive"><table class="table med-table analytics-table mb-0"><thead><tr><th>Month</th><th class="text-end">New Patients</th></tr></thead><tbody>
                 <tr th:each="stat : ${monthlyStats}"><td th:text="${stat.month}">January</td><td class="text-end fw-bold" th:text="${stat.count}">0</td></tr>
             </tbody></table></div></div></div>
-        <div class="col-xl-5"><div class="content-card h-100"><div class="content-card-header"><div><h2>Department-wise Patients</h2><p>Unique patients with appointments in the selected period.</p></div></div>
-            <div th:if="${!departmentStats.isEmpty()}" class="table-responsive"><table class="table med-table mb-0"><thead><tr><th>Department</th><th class="text-end">Patients</th></tr></thead><tbody>
+        <div class="col-xl-6"><div class="content-card h-100"><div class="content-card-header"><div><h2>Department-wise Patients</h2><p>Unique patients with appointments in the selected period.</p></div></div>
+            <div th:if="${!departmentStats.isEmpty()}" class="table-responsive"><table class="table med-table analytics-table mb-0"><thead><tr><th>Department</th><th class="text-end">Patients</th></tr></thead><tbody>
                 <tr th:each="stat : ${departmentStats}"><td th:text="${stat.department}">Cardiology</td><td class="text-end fw-bold" th:text="${stat.count}">0</td></tr>
             </tbody></table></div>
             <div th:if="${departmentStats.isEmpty()}" class="empty-state"><div class="empty-state-icon">—</div><h3>No department data</h3><p>No appointments were found for the selected filters.</p></div>
