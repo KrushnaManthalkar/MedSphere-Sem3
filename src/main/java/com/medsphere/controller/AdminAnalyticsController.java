@@ -31,6 +31,8 @@ public class AdminAnalyticsController {
                             @RequestParam(required = false) Integer month,
                             @RequestParam(required = false) Long departmentId,
                             Model model) {
+        model.addAttribute("username", org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication().getName());
+
         LocalDate today = LocalDate.now();
         int selectedYear = year != null ? year : today.getYear();
         Integer selectedMonth = month;
