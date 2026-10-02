@@ -493,3 +493,35 @@ body {
         padding: 22px;
     }
 }
+/* Admin Analytics table sizing */
+.analytics-table {
+    width: 100%;
+    min-width: 0;
+    table-layout: fixed;
+}
+
+.analytics-table th:first-child,
+.analytics-table td:first-child {
+    width: 70%;
+}
+
+.analytics-table th:last-child,
+.analytics-table td:last-child {
+    width: 30%;
+}
+
+.analytics-table td {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+@media (max-width: 1199px) {
+    .analytics-table {
+        table-layout: auto;
+    }
+
+    .analytics-table th,
+    .analytics-table td {
+        white-space: normal;
+    }
+}
