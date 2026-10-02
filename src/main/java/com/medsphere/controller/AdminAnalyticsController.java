@@ -60,6 +60,7 @@ public class AdminAnalyticsController {
         model.addAttribute("selectedYear", selectedYear);
         model.addAttribute("selectedMonth", selectedMonth);
         model.addAttribute("selectedDepartmentId", departmentId);
+        model.addAttribute("monthNames", List.of("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"));
         model.addAttribute("years", Arrays.asList(selectedYear - 2, selectedYear - 1, selectedYear, selectedYear + 1));
 
         List<MonthStat> monthlyStats = buildMonthlyStats(
