@@ -11,7 +11,7 @@
 <nav class="navbar navbar-expand-lg med-navbar"><div class="container-fluid px-4">
     <a class="navbar-brand med-brand" th:href="@{/}"><span class="brand-icon">+</span> MedSphere</a>
     <div class="d-flex align-items-center gap-3"><div class="user-info d-none d-md-block text-end">
-        <div class="user-label">Administrator</div><div class="user-name" th:text="${#authentication.name}">Admin</div>
+        <div class="user-label">Administrator</div><div class="user-name" th:text="${username}">Admin</div>
     </div><a class="btn btn-outline-light btn-sm px-3" th:href="@{/}">Dashboard</a></div>
 </div></nav>
 <main class="container-fluid px-4 py-4">
