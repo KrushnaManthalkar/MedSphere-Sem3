@@ -137,6 +137,19 @@
             </div>
 
 
+            <!-- Admin Analytics -->
+            <div class="col-md-6 col-xl-4" th:if="${isAdmin}">
+                <a class="dashboard-card" th:href="@{/admin/analytics}">
+                    <div class="dashboard-card-icon">📊</div>
+                    <div class="dashboard-card-content">
+                        <h3>Patient Analytics</h3>
+                        <p>Analyze new patients by month and department.</p>
+                    </div>
+                    <span class="card-arrow">→</span>
+                </a>
+            </div>
+
+
             <!-- Admin Management -->
             <div class="col-md-6 col-xl-4"
                  th:if="${isAdmin}">
