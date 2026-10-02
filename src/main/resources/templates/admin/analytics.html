@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Analytics | MedSphere</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body class="dashboard-page">
+<nav class="navbar navbar-expand-lg med-navbar"><div class="container-fluid px-4">
+    <a class="navbar-brand med-brand" th:href="@{/}"><span class="brand-icon">+</span> MedSphere</a>
+    <div class="d-flex align-items-center gap-3"><div class="user-info d-none d-md-block text-end">
+        <div class="user-label">Administrator</div><div class="user-name" th:text="${#authentication.name}">Admin</div>
+    </div><a class="btn btn-outline-light btn-sm px-3" th:href="@{/}">Dashboard</a></div>
+</div></nav>
+<main class="container-fluid px-4 py-4">
+    <div class="page-header mb-4"><div><div class="page-eyebrow">ADMIN ONLY</div>
+        <h1>New Patients Analysis</h1><p>Analyze registrations and department activity by year, month and department.</p>
+    </div></div>
+    <div class="search-card mb-4"><form method="get" th:action="@{/admin/analytics}" class="row g-3 align-items-end">
+        <div class="col-md-4 col-lg-3"><label class="form-label fw-semibold">Year</label>
+            <select name="year" class="form-select"><option th:each="y : ${years}" th:value="${y}" th:text="${y}" th:selected="${y == selectedYear}"></option></select>
+        </div>
+        <div class="col-md-4 col-lg-3"><label class="form-label fw-semibold">Month</label>
+            <select name="month" class="form-select"><option value="" th:selected="${selectedMonth == null}">All Months</option>
+                <option th:each="m : ${#numbers.sequence(1,12)}" th:value="${m}" th:text="${monthNames[m-1]}" th:selected="${m == selectedMonth}"></option>
+            </select></div>
+        <div class="col-md-4 col-lg-4"><label class="form-label fw-semibold">Department</label>
+            <select name="departmentId" class="form-select"><option value="" th:selected="${selectedDepartmentId == null}">All Departments</option>
+                <option th:each="department : ${departments}" th:value="${department.id}" th:text="${department.name}" th:selected="${department.id == selectedDepartmentId}"></option>
+            </select></div>
+        <div class="col-lg-2"><button type="submit" class="btn btn-primary w-100">Apply Filters</button></div>
+    </form></div>
+    <div class="row g-4 mb-4">
+        <div class="col-sm-6 col-xl-3"><div class="content-card p-4 h-100"><div class="page-eyebrow">ALL TIME</div><div class="display-6 fw-bold" th:text="${totalPatients}">0</div><div class="text-secondary small">Total registered patients</div></div></div>
+        <div class="col-sm-6 col-xl-3"><div class="content-card p-4 h-100"><div class="page-eyebrow">SELECTED PERIOD</div><div class="display-6 fw-bold" th:text="${newPatients}">0</div><div class="text-secondary small">New patient registrations</div></div></div>
+        <div class="col-sm-6 col-xl-3"><div class="content-card p-4 h-100"><div class="page-eyebrow">SELECTED PERIOD</div><div class="display-6 fw-bold" th:text="${uniqueVisitedPatients}">0</div><div class="text-secondary small">Unique patients with appointments</div></div></div>
+        <div class="col-sm-6 col-xl-3"><div class="content-card p-4 h-100"><div class="page-eyebrow">SELECTED PERIOD</div><div class="display-6 fw-bold" th:text="${totalVisits}">0</div><div class="text-secondary small">Total appointments</div></div></div>
+    </div>
+    <div class="row g-4">
+        <div class="col-xl-7"><div class="content-card h-100"><div class="content-card-header"><div><h2>Monthly New Patient Trend</h2><p>Registrations during <span th:text="${selectedYear}">2026</span>.</p></div></div>
+            <div class="table-responsive"><table class="table med-table mb-0"><thead><tr><th>Month</th><th class="text-end">New Patients</th></tr></thead><tbody>
+                <tr th:each="stat : ${monthlyStats}"><td th:text="${stat.month}">January</td><td class="text-end fw-bold" th:text="${stat.count}">0</td></tr>
+            </tbody></table></div></div></div>
+        <div class="col-xl-5"><div class="content-card h-100"><div class="content-card-header"><div><h2>Department-wise Patients</h2><p>Unique patients with appointments in the selected period.</p></div></div>
+            <div th:if="${!departmentStats.isEmpty()}" class="table-responsive"><table class="table med-table mb-0"><thead><tr><th>Department</th><th class="text-end">Patients</th></tr></thead><tbody>
+                <tr th:each="stat : ${departmentStats}"><td th:text="${stat.department}">Cardiology</td><td class="text-end fw-bold" th:text="${stat.count}">0</td></tr>
+            </tbody></table></div>
+            <div th:if="${departmentStats.isEmpty()}" class="empty-state"><div class="empty-state-icon">—</div><h3>No department data</h3><p>No appointments were found for the selected filters.</p></div>
+        </div></div>
+    </div>
+    <div class="info-banner mt-4"><div class="info-icon">i</div><div><h3>How this analysis works</h3><p>New patients use registration date. Department activity uses Appointment → Doctor → Department, so the existing database structure remains unchanged.</p></div></div>
+    <footer class="dashboard-footer mt-5"><span>MedSphere</span><span>Administrator Analytics</span></footer>
+</main></body></html>
