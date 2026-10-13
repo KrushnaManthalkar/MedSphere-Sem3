@@ -64,7 +64,12 @@ public class ConsultationServiceImpl implements ConsultationService {
 
         return consultationRepository.findByAppointmentId(appointmentId)
                 .orElseThrow(() ->
-                        new IllegalArgumentException(
-                                "Consultation not found."));
+                        new ResourceNotFoundException(
+                                "Consultation for appointment " + appointmentId));
+    }
+
+    @Override
+    public boolean consultationExistsForAppointment(Long appointmentId) {
+        return consultationRepository.findByAppointmentId(appointmentId).isPresent();
     }
 }
