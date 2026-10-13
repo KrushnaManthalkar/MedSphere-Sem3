@@ -301,11 +301,16 @@
 
                 <!-- View Consultation -->
 
-                <a th:if="${appointment.status.name() == 'COMPLETED'}"
+                <a th:if="${appointment.status.name() == 'COMPLETED' and consultationExists}"
                    th:href="@{/doctors/appointments/{id}/consultation/details(id=${appointment.id})}"
                    class="btn btn-success">
                     View Consultation →
                 </a>
+
+                <span th:if="${appointment.status.name() == 'COMPLETED' and !consultationExists}"
+                      class="text-muted small align-self-center">
+                    No consultation record is linked to this appointment.
+                </span>
 
             </div>
 
