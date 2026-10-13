@@ -5,6 +5,7 @@ import com.medsphere.entity.Doctor;
 import com.medsphere.repository.DoctorRepository;
 import com.medsphere.repository.UserRepository;
 import com.medsphere.service.AppointmentService;
+import com.medsphere.service.ConsultationService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,15 +18,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class DoctorAppointmentDetailsController {
 
     private final AppointmentService appointmentService;
+    private final ConsultationService consultationService;
     private final DoctorRepository doctorRepository;
     private final UserRepository userRepository;
 
     public DoctorAppointmentDetailsController(
             AppointmentService appointmentService,
+            ConsultationService consultationService,
             DoctorRepository doctorRepository,
             UserRepository userRepository) {
 
         this.appointmentService = appointmentService;
+        this.consultationService = consultationService;
         this.doctorRepository = doctorRepository;
         this.userRepository = userRepository;
     }
@@ -58,6 +62,8 @@ public class DoctorAppointmentDetailsController {
 
         model.addAttribute("appointment", appointment);
         model.addAttribute("doctor", doctor);
+        model.addAttribute("consultationExists",
+                consultationService.consultationExistsForAppointment(id));
 
         return "doctors/appointment-details";
     }
