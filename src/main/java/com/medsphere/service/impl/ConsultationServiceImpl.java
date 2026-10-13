@@ -3,6 +3,7 @@ package com.medsphere.service.impl;
 import com.medsphere.dto.ConsultationForm;
 import com.medsphere.entity.Appointment;
 import com.medsphere.entity.Consultation;
+import com.medsphere.exception.ResourceNotFoundException;
 import com.medsphere.repository.AppointmentRepository;
 import com.medsphere.repository.ConsultationRepository;
 import com.medsphere.service.ConsultationService;
