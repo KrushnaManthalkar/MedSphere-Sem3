@@ -13,4 +13,6 @@ public interface ConsultationService {
     Consultation getConsultationByAppointmentId(
             Long appointmentId
     );
+
+    boolean consultationExistsForAppointment(Long appointmentId);
 }
